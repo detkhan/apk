@@ -89,6 +89,118 @@ public function getdetailReportRealTimeImage($sawId,$weight_no)
     return $response;
 }//function
 
+public function getDataPro_name($saw_id,$MONTH,$YEAR,$pro_name,$type)
+{
+$clsMyDB = new MyDatabase();
+$strCondition2 = "
+SELECT SUM(weight_total)/1000 as weight_total,date(datetime_out) as date_data   FROM `raw` WHERE
+ `pro_name` LIKE '%$pro_name%'  AND saw_id = '$saw_id' and MONTH(datetime_out)='$MONTH'
+ and YEAR(datetime_out)='$YEAR' and type_name = '$type'  GROUP BY date(datetime_out) ORDER BY date(datetime_out) ASC ";
+   $objSelect2 = $clsMyDB->fncSelectRecord($strCondition2);
+   if(!$objSelect2)
+   {
+   $response="no";
+   }
+   else{
+     foreach ($objSelect2 as $value) {
+       $response[] =
+       [
+         'date_data' => date("d",strtotime($value['date_data'])),
+         'weight_total' => $value['weight_total'],
+       ];
+     }
+   }
+     return $response;
+}
+
+public function getlistDay($MONTH,$YEAR)
+{
+for($d=1; $d<=31; $d++)
+{
+    $time=mktime(12, 0, 0, $MONTH, $d, $YEAR);
+
+    if (date('m', $time)==$MONTH){
+            $response[]=date('d', $time);
+    }
+}
+return $response;
+}
+
+public function getWood_pieces($saw_id,$MONTH,$YEAR)
+{
+  $clsMyDB = new MyDatabase();
+  $strCondition2 = "
+  SELECT timber_saw,total,losts,datetime as date_wood   FROM `wood_pieces` WHERE
+   sawId = '$saw_id' and MONTH(datetime)='$MONTH'
+   and YEAR(datetime)='$YEAR'  ORDER BY date(datetime) ASC ";
+     $objSelect2 = $clsMyDB->fncSelectRecord($strCondition2);
+     if(!$objSelect2)
+     {
+     $response="no";
+     }
+     else{
+       foreach ($objSelect2 as $value) {
+         $response[] =
+         [
+           'date_wood' => date("d",strtotime($value['date_wood'])),
+           'timber_saw' => $value['timber_saw'],
+           'total' => $value['total'],
+           'losts' => $value['losts'],
+         ];
+       }
+     }
+       return $response;
+}
+
+public function getList($response1,$response2,$response3,$list_day)
+{
+foreach ($list_day as $key =>  $value) {
+$response[$value]['wood_income']=$this->getresponse1($value,$response1);
+$response[$value]['wood_sale']=$this->getresponse2($value,$response2);
+$responseqq=$this->getresponse3($value,$response3);
+$response[$value]['timber_saw']=$responseqq['timber_saw'];
+$response[$value]['total']=$responseqq['total'];
+$response[$value]['losts']=$responseqq['losts'];
+  }
+
+return $response;
+}
+
+public function getresponse1($value,$response1)
+{
+  foreach ($response1 as  $value2) {
+  if ($value==$value2['date_data']) {
+        $response=$value2['weight_total'];
+    }
+
+}
+return $response;
+}
+
+public function getresponse2($value,$response2)
+{
+  foreach ($response2 as  $value3) {
+  if ($value==$value3['date_data']) {
+      $response=$value3['weight_total'];
+  }
+    }
+    return $response;
+}
+
+public function getresponse3($value,$response3)
+{
+  foreach ($response3 as  $key=>$value4) {
+
+  if ($value==$value4['date_wood']) {
+      $response['timber_saw']=$value4['timber_saw'];
+      $response['total']=$value4['total'];
+      $response['losts']=$value4['losts'];
+  }
+    }
+    return $response;
+}
+
+
 }//class
 
 ?>

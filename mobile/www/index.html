@@ -26,6 +26,50 @@
 <div class="panel panel-left panel-reveal login-screen-content">
   <div class="content-block">
     <p>Left Panel content here</p>
+    <!-- List View -->
+<div class="list-block accordion-list">
+  <ul>
+    <li class="accordion-item"><a href="#" class="item-content item-link">
+        <div class="item-inner">
+          <div class="item-title">รายงานประจำวัน</div>
+        </div></a>
+      <div class="accordion-item-content">
+        <div class="content-block">
+          <div class="list-block">
+        <ul>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title" id="month_report" proname="ไม้ท่อน">ไม้ท่อน</div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title" id="month_report">Item with badge</div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title" id="month_report">Another item</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+        </div>
+      </div>
+    </li>
+    <li class="accordion-item"><a href="#" class="item-content item-link">
+        <div class="item-inner">
+          <div class="item-title">Item 2</div>
+        </div></a>
+      <div class="accordion-item-content">
+        <div class="content-block">
+          <p>Item 2 content. Lorem ipsum dolor sit amet...</p>
+        </div>
+      </div>
+    </li>
+    ...
+  </ul>
+</div>
     <!-- Click on link with "close-panel" class will close panel -->
     <p><a href="#" class="close-panel">Close me</a></p>
 </div>
@@ -57,27 +101,36 @@
                   </div><!--navbar-right-->
                 </div><!--navbar-inner-->
               </div><!--navbar-->
+              <div id="tab" class="toolbar tabbar">
 
+        </div>
               <div class="page-content">
 
                               <div id="contenthead">
-                                <div class="list-block">
-                                  <ul>
-                                    <li>
-                                      <div class="item-content">
 
-                                     <input type="text" placeholder="เลือกวันที่" readonly id="calendar-default"><i id="search" class="f7-icons">search</i>
-
-
-
-
-                                      </div>
-                                    </li>
-                                  </ul>
-                                </div>
                               </div>
                               <div id="content">
                               </div>
+
+
+                              <div class="content-block">
+                              <div class="tabs">
+                              <div id="tab1" class="tab active">
+
+                              </div>
+                              <div id="tab2" class="tab">
+
+                              </div>
+                              <div id="tab3" class="tab">
+
+                              </div>
+                              <div id="tab4" class="tab">
+
+                              </div>
+                              </div>
+                              </div>
+
+
                             </div><!--page content-->
                           </div><!--page index-->
 
@@ -93,7 +146,9 @@
                               <div id="right_detail" class="right">
                               </div><!--navbar-right-->
                             </div><!--navbar-inner-->
+
                           </div><!--navbar-->
+
                           <div class="page-content">
                             <div id="content_detail">
                             </div>
@@ -125,9 +180,52 @@
                             </div><!--page detail_realtime_id-->
 
 
+
+                            <div class="page cached" data-page="daily_report" class="page navbar-fixed toolbar-fixed">
+                              <!--navbar-->
+                            <div class="navbar">
+                              <div class="navbar-inner">
+                                <!-- We need cool sliding animation on title element, so we have additional "sliding" class -->
+                                <div class="left">
+                                <a href="#" class="open-panel link icon-only"><i class="icon icon-bars"></i></a>
+                                </div><!--navbar-left-->
+                                <div class="center">APK MASTER</div>
+                                <div id="right_index" class="right">
+
+                                </div><!--navbar-right-->
+                              </div><!--navbar-inner-->
+                            </div><!--navbar-->
+                            <div class="page-content">
+
+                                            <div id="contenthead">
+                                              <div class="list-block">
+                                                <ul>
+                                                  <li>
+                                                    <div class="item-content">
+
+                                                   <input type="text" placeholder="เลือกวันที่" readonly id="calendar-default"><i id="search" class="f7-icons">search</i>
+
+
+
+
+                                                    </div>
+                                                  </li>
+                                                </ul>
+                                              </div>
+                                            </div>
+                                            <div id="content_daily_report">
+                                            </div>
+
+
+
+                                          </div><!--page content-->
+                                        </div><!--page daily_report-->
+
+
         </div><!--pages-->
         </div><!--view-main-->
         </div><!--views-->
+
   </body>
   <script type="text/javascript" src="cordova.js"></script>
   <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>

@@ -15,9 +15,7 @@ var mainView = myApp.addView('.view-main', {
 });
 // Load about page:
 //mainView.router.load({pageName: 'index'});
-var calendarDefault = myApp.calendar({
-    input: '#calendar-default',
-});
+
 
 
 

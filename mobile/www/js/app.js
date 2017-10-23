@@ -95,7 +95,7 @@ $$(".navbar").css('display', 'block');
 $$("#contenthead").css('display', 'none');
 $$(".page-content").removeClass("login-screen-content");
 var calendar='\
-<i id="calendar" class="f7-icons">calendar</i>\
+<i id="calendar" class="f7-icons" report="realtime">calendar</i>\
 ';
 $$("#right_index").append(calendar);
 //var datereport="2017-04-20";
@@ -263,13 +263,45 @@ Chart.plugins.register({
 
 
 $$(document).on("click", "#calendar", function() {
+$$("#contenthead").html("");
 $$("#contenthead").css('display', 'block');
+var report=$$(this).attr("report");
+var proname=$$(this).attr("proname");
+var content='\
+<div class="list-block">\
+  <ul>\
+    <li>\
+      <div class="item-content">\
+     <input type="text" placeholder="เลือกวันที่" readonly id="calendar-default" ><i id="search" class="f7-icons" report="'+report+'" proname="'+proname+'">search</i>\
+      </div>\
+    </li>\
+  </ul>\
+</div>\
+';
+$$("#contenthead").append(content);
+var calendarDefault = myApp.calendar({
+    input: '#calendar-default',
+});
 });
 
 
 $$(document).on("click", "#search", function() {
 var dateselect=$$("#calendar-default").val();
-gethome(dateselect);
+var report=$$(this).attr("report");
+var proname=$$(this).attr("proname");
+switch (report) {
+  case 'realtime':
+    gethome(dateselect);
+    break;
+    case 'month_report':
+    //gethome(dateselect);
+    alert("test");
+    getDataPro_name(dateselect,proname);
+    break;
+  default:
+
+}
+
 });
 
 $$(document).on("click", "#detailrealtime", function() {
@@ -339,6 +371,8 @@ function getdetailrealtime(sawId,datereport) {
 
 
 }//function detailtime
+
+
 
 $$(document).on('page:init', '.page[data-page="detail_realtime_id"]', function (e) {
   // Do something here when page with data-page="about" attribute loaded and initialized
@@ -425,3 +459,63 @@ mainView.router.load({pageName: 'detail_realtime_id'});
 
 
 });
+
+
+
+
+$$(document).on("click", "#month_report", function() {
+  $$("#content").html("");
+  $$("#right_index").html("");
+  $$(".navbar").css('display', 'block');
+  $$("#contenthead").css('display', 'none');
+  $$(".page-content").removeClass("login-screen-content");
+  var proname=$$(this).attr("proname");
+  var calendar='\
+  <i id="calendar" class="f7-icons" report="month_report" proname="'+proname+'">calendar</i>\
+  ';
+  $$("#right_index").append(calendar);
+var content='\
+<div class="toolbar-inner">\
+<a href="#tab1" class="tab-link active">\
+<i class="icon demo-icon-1"></i>fgfg\
+</a>\
+<a href="#tab2" class="tab-link">\
+<i class="icon demo-icon-2"></i>fgfg\
+</a>\
+<a href="#tab3" class="tab-link">\
+<i class="icon demo-icon-3"></i>fgfgf\
+</a>\
+<a href="#tab4" class="tab-link">\
+<i class="icon demo-icon-4"></i>fgfg\
+</a>\
+</div>\
+';
+$$("#tab").append(content);
+
+  dateselect="2017-04-01";
+
+getDataPro_name(dateselect,proname);
+
+});
+function getDataPro_name(datenow,proname) {
+  var formattedDate = new Date(datenow);
+  var d = formattedDate.getDate();
+  var m =  formattedDate.getMonth();
+  m += 1;  // JavaScript months are 0-11
+  var y = formattedDate.getFullYear();
+  var datereport=y + "-" + m + "-" + d;
+  var datereportshow=d + "/" + m + "/" + y;
+  var email =localStorage.email;
+  var url = "http://"+hosturl+"/api/report_data_pro_name.php";
+  $$.getJSON( url, {
+      saw_id:'4',
+      datereport:datereport,
+      pro_name:proname
+    }
+  ,function( data ) {
+  console.log(data);
+  $$.each(data, function(i, field){
+});//each
+});//getJSON
+
+}
