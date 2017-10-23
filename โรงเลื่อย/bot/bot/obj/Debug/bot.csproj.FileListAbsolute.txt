@@ -1,0 +1,10 @@
+C:\Users\Watchapondetkhan\source\repos\bot\bot\obj\Debug\bot.csprojResolveAssemblyReference.cache
+C:\Users\Watchapondetkhan\source\repos\bot\bot\obj\Debug\bot.Form1.resources
+C:\Users\Watchapondetkhan\source\repos\bot\bot\obj\Debug\bot.Properties.Resources.resources
+C:\Users\Watchapondetkhan\source\repos\bot\bot\obj\Debug\bot.csproj.GenerateResource.Cache
+C:\Users\Watchapondetkhan\source\repos\bot\bot\obj\Debug\bot.csproj.CoreCompileInputs.cache
+C:\Users\Watchapondetkhan\source\repos\bot\bot\bin\Debug\bot.exe.config
+C:\Users\Watchapondetkhan\source\repos\bot\bot\bin\Debug\bot.exe
+C:\Users\Watchapondetkhan\source\repos\bot\bot\bin\Debug\bot.pdb
+C:\Users\Watchapondetkhan\source\repos\bot\bot\obj\Debug\bot.exe
+C:\Users\Watchapondetkhan\source\repos\bot\bot\obj\Debug\bot.pdb

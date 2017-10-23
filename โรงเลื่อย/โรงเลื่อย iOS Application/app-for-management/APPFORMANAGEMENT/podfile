@@ -1,0 +1,29 @@
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, ‘9.0’
+
+target ‘APPFORMANAGEMENT’ do
+
+pod 'Charts'
+pod 'Alamofire'
+pod ‘Realm’
+pod ‘RealmSwift’
+pod 'SwiftyJSON'
+pod 'Firebase/Crash'
+pod 'Firebase/Messaging'
+pod 'Firebase'
+pod ‘Firebase/Core’
+pod ‘SWRevealViewController’
+pod 'SmileLock'
+pod ‘SwiftCharts’
+pod ‘SDWebImage’
+pod ‘KRProgressHUD’
+use_frameworks!
+end
+
+post_install do |installer|
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['SWIFT_VERSION'] = '3.0'
+      end
+    end
+  end

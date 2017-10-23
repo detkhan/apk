@@ -39,37 +39,95 @@
           <!-- Your main view, should have "view-main" class -->
           <div class="view view-main">
             <!-- Pages container, because we use fixed-through navbar and toolbar, it has additional appropriate classes-->
-            <div class="pages">
-              <!-- Page, "data-page" contains page name -->
-                <div data-page="index" class="page navbar-fixed toolbar-fixed">
-                  <div class="pull-to-refresh-layer">
-                  </div>
-                <div class="navbar">
-                  <div class="navbar-inner">
-                    <!-- We need cool sliding animation on title element, so we have additional "sliding" class -->
-                    <div class="left">
-                    <a href="#" class="open-panel link icon-only"><i class="icon icon-bars"></i></a>
-                    </div>
-                    <div class="center sliding">APK MASTER</div>
-                  </div>
+            <div class="pages navbar-through">
 
+              <div class="page" data-page="index" class="page navbar-fixed toolbar-fixed">
+                <div class="pull-to-refresh-layer">
                 </div>
+                <!--navbar-->
+              <div class="navbar">
+                <div class="navbar-inner">
+                  <!-- We need cool sliding animation on title element, so we have additional "sliding" class -->
+                  <div class="left">
+                  <a href="#" class="open-panel link icon-only"><i class="icon icon-bars"></i></a>
+                  </div><!--navbar-left-->
+                  <div class="center">APK MASTER</div>
+                  <div id="right_index" class="right">
 
-                <div class="page-content">
-                  <!-- Default pull to refresh layer-->
+                  </div><!--navbar-right-->
+                </div><!--navbar-inner-->
+              </div><!--navbar-->
 
-<div id="content">
-</div>
+              <div class="page-content">
+
+                              <div id="contenthead">
+                                <div class="list-block">
+                                  <ul>
+                                    <li>
+                                      <div class="item-content">
+
+                                     <input type="text" placeholder="เลือกวันที่" readonly id="calendar-default"><i id="search" class="f7-icons">search</i>
 
 
-                </div>
-
-              </div>
-              </div>
 
 
-          </div>
-        </div>
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                              <div id="content">
+                              </div>
+                            </div><!--page content-->
+                          </div><!--page index-->
+
+                          <div class="page cached" data-page="detail_realtime">
+                            <!--navbar-->
+                          <div class="navbar">
+                            <div class="navbar-inner">
+                              <!-- We need cool sliding animation on title element, so we have additional "sliding" class -->
+                              <div class="left">
+                              <a href="#index" class="icon-only"><i class="icon icon-back"></i></a>
+                              </div><!--navbar-left-->
+                              <div class="center">Detail</div>
+                              <div id="right_detail" class="right">
+                              </div><!--navbar-right-->
+                            </div><!--navbar-inner-->
+                          </div><!--navbar-->
+                          <div class="page-content">
+                            <div id="content_detail">
+                            </div>
+                            </div><!--page content-->
+
+                          </div><!--page detail_realtime-->
+
+
+                            <div class="page cached" data-page="detail_realtime_id">
+                              <!--navbar-->
+                            <div class="navbar">
+                              <div class="navbar-inner">
+                                <!-- We need cool sliding animation on title element, so we have additional "sliding" class -->
+                                <div class="left">
+                                <a href="#detail_realtime" class="icon-only"><i class="icon icon-back"></i></a>
+                                </div><!--navbar-left-->
+                                <div id="center_detail_id" class="center"></div>
+                                <div id="right_detail_id" class="right">
+                                </div><!--navbar-right-->
+                              </div><!--navbar-inner-->
+                            </div><!--navbar-->
+                            <div class="page-content">
+                              <div id="content_detail_id">
+                                <!-- Slider -->
+
+                              </div>
+                              </div><!--page content-->
+
+                            </div><!--page detail_realtime_id-->
+
+
+        </div><!--pages-->
+        </div><!--view-main-->
+        </div><!--views-->
   </body>
   <script type="text/javascript" src="cordova.js"></script>
   <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>

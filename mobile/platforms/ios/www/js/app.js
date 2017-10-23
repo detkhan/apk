@@ -1,7 +1,7 @@
 checkcookies();
 function checkcookies() {
 if(localStorage.email){
-gethome();
+gethome("2017-04-20");
 }else{
 getlogin();
 }
@@ -10,6 +10,7 @@ getlogin();
 function getlogin() {
 $$("#content").html("");
 $$(".navbar").css('display', 'none');
+$$("#contenthead").css('display', 'none');
 $$(".page-content").addClass("login-screen-content");
 var content='\
 <!-- Should be a direct child of BODY -->\
@@ -77,7 +78,7 @@ myApp.alert("Wong Password !", 'APK MASTER');
 }else{
 localStorage.email=email;
 localStorage.fullname=field.fullname;
-gethome();
+gethome("2017-04-20");
 }
 
 
@@ -87,22 +88,63 @@ gethome();
 
 });//click login
 
-function gethome() {
+function gethome(datenow) {
 $$("#content").html("");
+$$("#right_index").html("");
 $$(".navbar").css('display', 'block');
+$$("#contenthead").css('display', 'none');
 $$(".page-content").removeClass("login-screen-content");
-var content=localStorage.email;
-$$("#content").append(content);
-getRealtimeTransaction();
+var calendar='\
+<i id="calendar" class="f7-icons">calendar</i>\
+';
+$$("#right_index").append(calendar);
+//var datereport="2017-04-20";
+//var datereport = new Date("2017-04-20");
+var formattedDate = new Date(datenow);
+var d = formattedDate.getDate();
+var m =  formattedDate.getMonth();
+m += 1;  // JavaScript months are 0-11
+var y = formattedDate.getFullYear();
+var datereport=y + "-" + m + "-" + d;
+var datereportshow=d + "/" + m + "/" + y;
+getRealtimeTransaction(datereport,datereportshow);
 }//gethome
 
-function getRealtimeTransaction() {
-var content= '<canvas id="myChart" width="600" height="400"></canvas>';
+function getRealtimeTransaction(datereport,datereportshow) {
+var content= '\
+<div class="card">\
+    <div class="card-header">รายงานประจำวันที่ '+datereportshow+'</div>\
+    <div class="card-content">\
+        <div class="card-content-inner"><canvas id="myChart" width="600" height="400"></canvas></div>\
+    </div>\
+    <div class="card-footer">\
+    <div class="list-block">\
+      <ul>\
+        <li class="item-content">\
+          <div class="item-inner">\
+            <div class="item-title">wood:ปริมาณไม้เข้า(ตัน)</div>\
+          </div>\
+        </li>\
+        <li class="item-content">\
+          <div class="item-inner">\
+            <div class="item-title">price:ราคาเฉลี่ยต่อกิโลกรัม(บาท)</div\
+          </div>\
+        </li>\
+        <li class="item-content">\
+          <div class="item-inner">\
+            <div class="item-title">car:จำนวนรถ(คัน)</div>\
+          </div>\
+        </li>\
+      </ul>\
+    </div>\
+    </div>\
+</div> \
+';
 $$("#content").append(content);
-garphrealtime();
+garphrealtime(datereport);
 }//RealtimeTransaction
 
-function garphrealtime() {
+function garphrealtime(datereport) {
   var url = "http://"+hosturl+"/api/reportrealtime.php";
 var email =localStorage.email;
 var backgroundColor = [
@@ -124,13 +166,16 @@ var borderColor=
 	'rgba(153, 102, 255,1)',
 	'rgba(201, 203, 207,1)'
 ];
+var label=["Wood", "Price", "Car"];
 var datasets=[];
   $$.getJSON( url, {
-      email:email
+      email:email,
+      datereport:datereport
     }
   ,function( data ) {
     //  console.log(data);
   $$.each(data, function(i, field){
+    //console.log(i);
 if (field[0].transaction_count>0) {
   var a={
               label: field[0].shortname,
@@ -140,19 +185,35 @@ if (field[0].transaction_count>0) {
               borderWidth: 1
           };
   datasets.push(a);
-}    
+  var content='\
+  <div class="card">\
+      <div class="card-content">\
+      <div class="list-block">\
+        <ul>\
+          <li class="item-content">\
+            <div class="item-inner">\
+              <div id="detailrealtime" datereport="'+datereport+'" sawId="'+field[0].sawId+'" class="item-title"><a href="#detail_realtime">รายละเอียดของสาขา '+field[0].shortname+'</a></div>\
+            </div>\
+          </li>\
+          </ul>\
+          </div>\
+          </div>\
+          </div>\
+  ';
+  $$("#content").append(content);
+}
 });
-graprealtime(datasets);
+graprealtime(label,datasets);
 });
 
 }
 
-function graprealtime(datasets) {
+function graprealtime(label,datasets) {
   var ctx = document.getElementById("myChart").getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: ["Wood", "Price", "Transaction"],
+        labels: label,
         datasets:datasets
     },
     options: {
@@ -165,4 +226,202 @@ var myChart = new Chart(ctx, {
         }
     }
 });
+Chart.plugins.register({
+    afterDatasetsDraw: function(chart, easing) {
+        // To only draw at the end of animation, check for easing === 1
+        var ctx = chart.ctx;
+
+        chart.data.datasets.forEach(function (dataset, i) {
+            var meta = chart.getDatasetMeta(i);
+            if (!meta.hidden) {
+                meta.data.forEach(function(element, index) {
+                    // Draw the text in black, with the specified font
+                    ctx.fillStyle = 'rgb(0, 0, 0)';
+
+                    var fontSize = 10;
+                    var fontStyle = 'normal';
+                    var fontFamily = 'Helvetica Neue';
+                    ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
+
+                    // Just naively convert to string for now
+                    var dataString = dataset.data[index].toString();
+
+                    // Make sure alignment settings are correct
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+
+                    var padding = 5;
+                    var position = element.tooltipPosition();
+                    ctx.fillText(dataString, position.x, position.y - (fontSize / 2) - padding);
+                });
+            }
+        });
+    }
+});
 }
+
+
+
+$$(document).on("click", "#calendar", function() {
+$$("#contenthead").css('display', 'block');
+});
+
+
+$$(document).on("click", "#search", function() {
+var dateselect=$$("#calendar-default").val();
+gethome(dateselect);
+});
+
+$$(document).on("click", "#detailrealtime", function() {
+var datereport=$$(this).attr("datereport");
+var sawId=$$(this).attr("sawId");
+getdetailrealtime(sawId,datereport);
+});
+
+function getdetailrealtime(sawId,datereport) {
+  $$("#content_detail").html('');
+  //mainView.router.load({pageName: 'detailrealtime'});
+  var content='';
+  var url = "http://"+hosturl+"/api/reportrealtimedetail.php";
+  content+='\
+  <div class="card">\
+      <div class="card-content">\
+      <div class="list-block media-list">\
+        <ul>';
+  $$.getJSON( url, {
+      sawId:sawId,
+      datereport:datereport
+    }
+  ,function( data ) {
+  console.log(data[0].length);
+  //var dataarray=data[0];
+  $$.each(data[0], function(i, field){
+    //console.log(i);
+    //console.log(field);
+
+    content+='\
+    <li>\
+         <a id="listdetail" href="#" class="item-link item-content"\
+          weight_no="'+field.weight_no+'"\
+          sawId="'+field.sawId+'"\
+          car_register="'+field.car_register+'"\
+          cus_name="'+field.cus_name+'"\
+          pro_name="'+field.pro_name+'"\
+          place_name="'+field.place_name+'"\
+          datetime_in="'+field.datetime_in+'"\
+          datetime_out="'+field.datetime_out+'"\
+          weight_net="'+field.weight_net+'"\
+          price="'+field.price+'"\
+          bill_no="'+field.bill_no+'"\
+         >\
+           <div class="item-inner">\
+             <div class="item-title-row">\
+               <div class="item-title">'+field.cus_name+'</div>\
+               <div class="item-after">'+field.detailtime+'</div>\
+             </div>\
+             <div class="item-subtitle">'+field.pro_name+'</div>\
+             <div class="item-text"><p>น้ำหนัก '+field.weight_net+' ตัน<p></div>\
+           </div>\
+         </a>\
+       </li>\
+    ';
+
+  });//each
+  content+='\
+  </ul>\
+  </div>\
+  </div>\
+  </div>\
+  ';
+  $$("#content_detail").append(content);
+  //console.log(content);
+});//getjson
+
+
+}//function detailtime
+
+$$(document).on('page:init', '.page[data-page="detail_realtime_id"]', function (e) {
+  // Do something here when page with data-page="about" attribute loaded and initialized
+  var mySwiper = myApp.swiper('.swiper-container', {
+    pagination:'.swiper-pagination'
+  });
+
+});
+
+$$(document).on('page:reinit', '.page[data-page="detail_realtime_id"]', function (e) {
+  // Do something here when page with data-page="about" attribute loaded and initialized
+  var mySwiper = myApp.swiper('.swiper-container', {
+    pagination:'.swiper-pagination'
+  });
+
+});
+
+
+$$(document).on("click", "#listdetail", function() {
+
+var sawId=$$(this).attr("sawId");
+var weight_no=$$(this).attr("weight_no");
+var car_register=$$(this).attr("car_register");
+var cus_name=$$(this).attr("cus_name");
+var pro_name=$$(this).attr("pro_name");
+var place_name=$$(this).attr("place_name");
+var datetime_in=$$(this).attr("datetime_in");
+var datetime_out=$$(this).attr("datetime_out");
+var weight_net=$$(this).attr("weight_net");
+var price=$$(this).attr("price");
+var bill_no=$$(this).attr("bill_no");
+
+$$("#center_detail_id").html('');
+$$("#content_detail_id").html('');
+$$("#center_detail_id").append(cus_name);
+
+var content='';
+content+='\
+<div class="card">\
+    <div class="card-header">bill no: '+bill_no+'</div>\
+    <div class="card-content">\
+<!-- Slider -->\
+<div class="swiper-container">\
+<div class="swiper-wrapper">\
+';
+var url = "http://"+hosturl+"/api/report_realtime_detail_id.php";
+$$.getJSON( url, {
+    sawId:sawId,
+    weight_no:weight_no
+  }
+,function( data ) {
+console.log(data.length);
+//var dataarray=data[0];
+$$.each(data[0], function(i, field){
+
+content+='\
+<div class="swiper-slide"><span><img src="http://afm.revocloudserver.com/uploadimage/'+field.file_image+'" width="100%" height="300"></span></div>\
+';
+});//each
+content+='\
+</div>\
+<div class="swiper-pagination"></div>\
+</div>\
+';
+content+='\
+        <div class="card-content-inner">\
+        <p>pro name: '+pro_name+'</p>\
+        <p>weight_no: '+weight_no+'</p>\
+        <p>car register: '+car_register+'</p>\
+        <p>weight net: '+weight_net+' ตัน</p>\
+        <p>price: '+price+' บาท</p>\
+        <p>place name: '+place_name+'</p>\
+        <p>datetime in: '+datetime_in+'</p>\
+        <p>datetime out: '+datetime_out+'</p>\
+        </div>\
+    </div>\
+</div> \
+';
+$$("#content_detail_id").append(content);
+//console.log(content);
+mainView.router.load({pageName: 'detail_realtime_id'});
+});//getjson
+
+
+
+});

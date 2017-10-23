@@ -1,0 +1,22 @@
+//
+//  Constants.swift
+//  APPFORMANAGEMENT
+//
+//  Created by Chanakan Jumnongwit on 1/24/2560 BE.
+//  Copyright © 2560 REVO. All rights reserved.
+//
+
+import UIKit
+import Foundation
+//MARK: Server path location
+let SERVER_PATH = "http://afm.revocloudserver.com/"
+
+enum ServiceKey : Int {
+    case REGISTER_USER_RESPONSE , LOGIN_USER_RESPONSE , FORGET_PASSWORD_RESPONSE , CHANGE_PASSWORD_RESPONSE , SAWMILL_REALTIME_TRANSACTION , SAWMILL_REALTIME_TRANSACTION_DETAIL , SAWMILL_POST_REALTIME_TRANSACTION , WOOD_PIECES , INCOMING_OUTCOMING , PROFIT_LOSS_DETAIL , INTENSIVE_PERFORMANCE , FIRE_WOOD , WEIGHT_OUT_COMING , CHECK_WOOD_PIECES , CHECK_FIRE_WOOD , CHECK_WEIGHT_OUTCOMING , CHECK_PROFIT_LOSS
+}
+
+class Constants: NSObject {
+    
+}
+
+

@@ -1,0 +1,12 @@
+{
+  "name": "app-for-management-api",
+  "description": "sawmill",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "bootstrap-datepicker": "bootstrap-3-datepicker#^1.6.4",
+    "bootstrap-select": "^1.12.2"
+  }
+}

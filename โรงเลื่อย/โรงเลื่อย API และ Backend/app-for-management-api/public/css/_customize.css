@@ -1,0 +1,156 @@
+/* Space out content a bit */
+body {
+  font-family: 'Roboto', sans-serif;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+/* Everything but the jumbotron gets side spacing for mobile first views */
+.header,
+.marketing,
+.footer {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+/* Custom page header */
+.header {
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e5e5e5;
+}
+/* Make the masthead heading the same height as the navigation */
+.header h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 40px;
+}
+
+/* Custom page footer */
+.footer {
+  padding-top: 19px;
+  color: #777;
+  border-top: 1px solid #e5e5e5;
+}
+
+.nav-pills>li.active>.dropdown>button, .nav-pills>li.active>.dropdown>button:focus, .nav-pills>li.active>.dropdown>button:hover {
+  color: #fff;
+  height: 40px;
+  border: none;
+  margin-left: 20px;
+  text-shadow: none;
+  background-image: none;
+  background-color: #337ab7;
+}
+
+.nav-pills>li.active>.dropdown>.dropdown-menu {
+  right: 0;
+  left: inherit;
+}
+
+.header h3 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+a:hover { text-decoration: none; }
+.fs-19 { font-size: 19px; }
+.pd-0 { padding: 0; }
+.mb-0 { margin-bottom: 0px; }
+.mb-20 { margin-bottom: 20px; }
+.green { color: #5cb85c; }
+
+.main-menu .panel {
+  height: 150px;
+  overflow: hidden;
+}
+
+.main-menu .panel > .panel-body > div {
+  line-height: 118px;
+}
+
+.main-menu .panel > .panel-body {
+  color: #fff;
+  width: 100%;
+  height: 100%;
+  background-size: 105% auto;
+  background-position: center;
+  -webkit-background-size: 105% auto;
+  -webkit-transition: all 1s ease;
+  -moz-transition: all 1s ease;
+  -ms-transition: all 1s ease;
+  -o-transition: all 1s ease;
+  transition: all 1s ease;
+}
+
+.main-menu .panel:hover > .panel-body {
+  -webkit-background-size: 120% auto;
+  background-size: 120% auto;
+}
+
+.bg-user {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../image/background/user.jpg');
+}
+.bg-logs {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../image/background/logs.jpg');
+}
+.bg-firewood {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../image/background/firewood.jpg');
+}
+.bg-profit {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../image/background/profit.jpg');
+}
+.bg-performance {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../image/background/performance.jpg');
+}
+
+.dropdown-menu {
+  min-width: 195px;
+}
+
+table th, table td {
+  vertical-align: middle !important;
+}
+
+/* Customize container */
+@media (min-width: 768px) {
+  .container {
+    max-width: 730px;
+  }
+}
+.container-narrow > hr {
+  margin: 30px 0;
+}
+
+/* Main marketing message and sign up button */
+.jumbotron {
+  text-align: center;
+  border-bottom: 1px solid #e5e5e5;
+}
+.jumbotron .btn {
+  padding: 14px 24px;
+  font-size: 21px;
+}
+
+/* Supporting marketing content */
+.marketing {
+  margin: 10px 0 40px 0;
+}
+.marketing p + h4 {
+  margin-top: 28px;
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+  /* Remove the padding we set earlier */
+  .header,
+  .marketing,
+  .footer {
+    padding-right: 0;
+    padding-left: 0;
+  }
+  /* Remove the bottom border on the jumbotron for visual effect */
+  .jumbotron {
+    border-bottom: 0;
+  }
+}

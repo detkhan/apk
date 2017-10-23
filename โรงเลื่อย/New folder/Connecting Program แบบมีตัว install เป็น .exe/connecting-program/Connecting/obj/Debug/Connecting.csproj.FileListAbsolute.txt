@@ -1,0 +1,70 @@
+C:\Users\Revo\Desktop\Connecting program\Connecting\Connecting\bin\Debug\Connecting.exe.config
+C:\Users\Revo\Desktop\Connecting program\Connecting\Connecting\bin\Debug\Connecting.exe
+C:\Users\Revo\Desktop\Connecting program\Connecting\Connecting\bin\Debug\Connecting.pdb
+C:\Users\Revo\Desktop\Connecting program\Connecting\Connecting\obj\Debug\Connecting.csprojResolveAssemblyReference.cache
+C:\Users\Revo\Desktop\Connecting program\Connecting\Connecting\obj\Debug\Connecting.Form1.resources
+C:\Users\Revo\Desktop\Connecting program\Connecting\Connecting\obj\Debug\Connecting.Properties.Resources.resources
+C:\Users\Revo\Desktop\Connecting program\Connecting\Connecting\obj\Debug\Connecting.csproj.GenerateResource.Cache
+C:\Users\Revo\Desktop\Connecting program\Connecting\Connecting\obj\Debug\Connecting.exe
+C:\Users\Revo\Desktop\Connecting program\Connecting\Connecting\obj\Debug\Connecting.pdb
+C:\Users\Revo\Desktop\Connecting program\Connecting\Connecting\bin\Debug\MySql.Data.dll
+C:\Users\Revo\Desktop\Connecting program\Connecting\Connecting\bin\Debug\MySql.Web.dll
+C:\Users\Revo\Desktop\Connecting program\Connecting\Connecting\bin\Debug\MySql.Data.xml
+C:\Users\Revo\Desktop\Connecting program\Connecting\Connecting\bin\Debug\MySql.Web.xml
+C:\Users\Revo\Desktop\Connecting\Connecting\Connecting\bin\Debug\Connecting.exe.config
+C:\Users\Revo\Desktop\Connecting\Connecting\Connecting\obj\Debug\Connecting.exe
+C:\Users\Revo\Desktop\Connecting\Connecting\Connecting\obj\Debug\Connecting.pdb
+C:\Users\Revo\Desktop\Connecting\Connecting\Connecting\bin\Debug\Connecting.exe
+C:\Users\Revo\Desktop\Connecting\Connecting\Connecting\bin\Debug\Connecting.pdb
+C:\Users\Revo\Desktop\Connecting\Connecting\Connecting\bin\Debug\MySql.Data.dll
+C:\Users\Revo\Desktop\Connecting\Connecting\Connecting\bin\Debug\MySql.Web.dll
+C:\Users\Revo\Desktop\Connecting\Connecting\Connecting\bin\Debug\MySql.Data.xml
+C:\Users\Revo\Desktop\Connecting\Connecting\Connecting\bin\Debug\MySql.Web.xml
+C:\Users\Revo\Desktop\Connecting\Connecting\Connecting\obj\Debug\Connecting.csprojResolveAssemblyReference.cache
+C:\Users\Revo\Desktop\Connecting\Connecting\Connecting\obj\Debug\Connecting.Form1.resources
+C:\Users\Revo\Desktop\Connecting\Connecting\Connecting\obj\Debug\Connecting.Properties.Resources.resources
+C:\Users\Revo\Desktop\Connecting\Connecting\Connecting\obj\Debug\Connecting.csproj.GenerateResource.Cache
+C:\Users\REVO\Desktop\connecting-program\Connecting\bin\Debug\Connecting.exe.config
+C:\Users\REVO\Desktop\connecting-program\Connecting\bin\Debug\Connecting.exe
+C:\Users\REVO\Desktop\connecting-program\Connecting\bin\Debug\Connecting.pdb
+C:\Users\REVO\Desktop\connecting-program\Connecting\bin\Debug\Newtonsoft.Json.dll
+C:\Users\REVO\Desktop\connecting-program\Connecting\bin\Debug\Newtonsoft.Json.xml
+C:\Users\REVO\Desktop\connecting-program\Connecting\obj\Debug\Connecting.csprojResolveAssemblyReference.cache
+C:\Users\REVO\Desktop\connecting-program\Connecting\obj\Debug\Connecting.Form1.resources
+C:\Users\REVO\Desktop\connecting-program\Connecting\obj\Debug\Connecting.Properties.Resources.resources
+C:\Users\REVO\Desktop\connecting-program\Connecting\obj\Debug\Connecting.csproj.GenerateResource.Cache
+C:\Users\REVO\Desktop\connecting-program\Connecting\obj\Debug\Connecting.exe
+C:\Users\REVO\Desktop\connecting-program\Connecting\obj\Debug\Connecting.pdb
+C:\Users\REVO\Desktop\Connecting Program Backup\connecting-program\Connecting\bin\Debug\Connecting.exe.config
+C:\Users\REVO\Desktop\Connecting Program Backup\connecting-program\Connecting\obj\Debug\Connecting.exe
+C:\Users\REVO\Desktop\Connecting Program Backup\connecting-program\Connecting\obj\Debug\Connecting.pdb
+C:\Users\REVO\Desktop\Connecting Program Backup\connecting-program\Connecting\bin\Debug\Connecting.exe
+C:\Users\REVO\Desktop\Connecting Program Backup\connecting-program\Connecting\bin\Debug\Connecting.pdb
+C:\Users\REVO\Desktop\Connecting Program Backup\connecting-program\Connecting\bin\Debug\Newtonsoft.Json.dll
+C:\Users\REVO\Desktop\Connecting Program Backup\connecting-program\Connecting\bin\Debug\Newtonsoft.Json.xml
+C:\Users\REVO\Desktop\Connecting Program Backup\connecting-program\Connecting\obj\Debug\Connecting.csprojResolveAssemblyReference.cache
+C:\Users\REVO\Desktop\Connecting Program Backup\connecting-program\Connecting\obj\Debug\Connecting.Form1.resources
+C:\Users\REVO\Desktop\Connecting Program Backup\connecting-program\Connecting\obj\Debug\Connecting.Properties.Resources.resources
+C:\Users\REVO\Desktop\Connecting Program Backup\connecting-program\Connecting\obj\Debug\Connecting.csproj.GenerateResource.Cache
+C:\Users\REVO\Desktop\Connecting Program แบบมีตัว install เป็น .exe\connecting-program\Connecting\bin\Debug\Connecting.exe.config
+C:\Users\REVO\Desktop\Connecting Program แบบมีตัว install เป็น .exe\connecting-program\Connecting\obj\Debug\Connecting.exe
+C:\Users\REVO\Desktop\Connecting Program แบบมีตัว install เป็น .exe\connecting-program\Connecting\obj\Debug\Connecting.pdb
+C:\Users\REVO\Desktop\Connecting Program แบบมีตัว install เป็น .exe\connecting-program\Connecting\bin\Debug\Connecting.exe
+C:\Users\REVO\Desktop\Connecting Program แบบมีตัว install เป็น .exe\connecting-program\Connecting\bin\Debug\Connecting.pdb
+C:\Users\REVO\Desktop\Connecting Program แบบมีตัว install เป็น .exe\connecting-program\Connecting\bin\Debug\Newtonsoft.Json.dll
+C:\Users\REVO\Desktop\Connecting Program แบบมีตัว install เป็น .exe\connecting-program\Connecting\bin\Debug\Newtonsoft.Json.xml
+C:\Users\REVO\Desktop\Connecting Program แบบมีตัว install เป็น .exe\connecting-program\Connecting\obj\Debug\Connecting.Form1.resources
+C:\Users\REVO\Desktop\Connecting Program แบบมีตัว install เป็น .exe\connecting-program\Connecting\obj\Debug\Connecting.Properties.Resources.resources
+C:\Users\REVO\Desktop\Connecting Program แบบมีตัว install เป็น .exe\connecting-program\Connecting\obj\Debug\Connecting.csproj.GenerateResource.Cache
+\\Mac\Home\Desktop\โรงเลื่อย\Connecting Program แบบมีตัว install เป็น .exe\connecting-program\Connecting\bin\Debug\Connecting.exe.config
+\\Mac\Home\Desktop\โรงเลื่อย\Connecting Program แบบมีตัว install เป็น .exe\connecting-program\Connecting\bin\Debug\Connecting.exe
+\\Mac\Home\Desktop\โรงเลื่อย\Connecting Program แบบมีตัว install เป็น .exe\connecting-program\Connecting\bin\Debug\Connecting.pdb
+\\Mac\Home\Desktop\โรงเลื่อย\Connecting Program แบบมีตัว install เป็น .exe\connecting-program\Connecting\bin\Debug\Newtonsoft.Json.dll
+\\Mac\Home\Desktop\โรงเลื่อย\Connecting Program แบบมีตัว install เป็น .exe\connecting-program\Connecting\bin\Debug\Newtonsoft.Json.xml
+\\Mac\Home\Desktop\โรงเลื่อย\Connecting Program แบบมีตัว install เป็น .exe\connecting-program\Connecting\obj\Debug\Connecting.csprojResolveAssemblyReference.cache
+\\Mac\Home\Desktop\โรงเลื่อย\Connecting Program แบบมีตัว install เป็น .exe\connecting-program\Connecting\obj\Debug\Connecting.Form1.resources
+\\Mac\Home\Desktop\โรงเลื่อย\Connecting Program แบบมีตัว install เป็น .exe\connecting-program\Connecting\obj\Debug\Connecting.Properties.Resources.resources
+\\Mac\Home\Desktop\โรงเลื่อย\Connecting Program แบบมีตัว install เป็น .exe\connecting-program\Connecting\obj\Debug\Connecting.csproj.GenerateResource.Cache
+\\Mac\Home\Desktop\โรงเลื่อย\Connecting Program แบบมีตัว install เป็น .exe\connecting-program\Connecting\obj\Debug\Connecting.csproj.CoreCompileInputs.cache
+\\Mac\Home\Desktop\โรงเลื่อย\Connecting Program แบบมีตัว install เป็น .exe\connecting-program\Connecting\obj\Debug\Connecting.exe
+\\Mac\Home\Desktop\โรงเลื่อย\Connecting Program แบบมีตัว install เป็น .exe\connecting-program\Connecting\obj\Debug\Connecting.pdb

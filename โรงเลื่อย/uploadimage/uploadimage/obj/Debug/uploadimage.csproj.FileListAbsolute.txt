@@ -1,0 +1,12 @@
+C:\Users\Watchapondetkhan\source\repos\uploadimage\uploadimage\obj\Debug\uploadimage.csprojResolveAssemblyReference.cache
+C:\Users\Watchapondetkhan\source\repos\uploadimage\uploadimage\obj\Debug\uploadimage.Form1.resources
+C:\Users\Watchapondetkhan\source\repos\uploadimage\uploadimage\obj\Debug\uploadimage.Properties.Resources.resources
+C:\Users\Watchapondetkhan\source\repos\uploadimage\uploadimage\obj\Debug\uploadimage.csproj.GenerateResource.Cache
+C:\Users\Watchapondetkhan\source\repos\uploadimage\uploadimage\obj\Debug\uploadimage.csproj.CoreCompileInputs.cache
+C:\Users\Watchapondetkhan\source\repos\uploadimage\uploadimage\bin\Debug\uploadimage.exe.config
+C:\Users\Watchapondetkhan\source\repos\uploadimage\uploadimage\bin\Debug\uploadimage.exe
+C:\Users\Watchapondetkhan\source\repos\uploadimage\uploadimage\bin\Debug\uploadimage.pdb
+C:\Users\Watchapondetkhan\source\repos\uploadimage\uploadimage\obj\Debug\uploadimage.exe
+C:\Users\Watchapondetkhan\source\repos\uploadimage\uploadimage\obj\Debug\uploadimage.pdb
+C:\Users\Watchapondetkhan\source\repos\uploadimage\uploadimage\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Watchapondetkhan\source\repos\uploadimage\uploadimage\bin\Debug\Newtonsoft.Json.xml

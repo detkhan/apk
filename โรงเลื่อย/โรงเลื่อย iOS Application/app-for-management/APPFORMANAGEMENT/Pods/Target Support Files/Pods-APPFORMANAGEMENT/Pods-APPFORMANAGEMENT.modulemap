@@ -1,0 +1,6 @@
+framework module Pods_APPFORMANAGEMENT {
+  umbrella header "Pods-APPFORMANAGEMENT-umbrella.h"
+
+  export *
+  module * { export * }
+}

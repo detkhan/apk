@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "DA6E989976EA91225AE8E8D3BAB63A9CF393C35F",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "9282CBAB0E738DA9E3FC6C7726DAC10D32717B1A" : 9223372036854775807,
+    "DA6E989976EA91225AE8E8D3BAB63A9CF393C35F" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "084A890D-01FE-4AB4-88FA-009DA500C034",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "9282CBAB0E738DA9E3FC6C7726DAC10D32717B1A" : "..\/Downloads\/MonthYearPickerView-Swift",
+    "DA6E989976EA91225AE8E8D3BAB63A9CF393C35F" : "APPFORMANAGEMENT\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "APPFORMANAGEMENT",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "APPFORMANAGEMENT\/APPFORMANAGEMENT.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/bendodson\/MonthYearPickerView-Swift",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "9282CBAB0E738DA9E3FC6C7726DAC10D32717B1A"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/bitbucket.org\/CJGUNz\/app-for-management.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "DA6E989976EA91225AE8E8D3BAB63A9CF393C35F"
+    }
+  ]
+}
