@@ -15,9 +15,7 @@ var mainView = myApp.addView('.view-main', {
 });
 // Load about page:
 //mainView.router.load({pageName: 'index'});
-var calendarDefault = myApp.calendar({
-    input: '#calendar-default',
-});
+
 
 
 
@@ -25,4 +23,4 @@ var calendarDefault = myApp.calendar({
 
 //var hosturl="127.0.0.1";
 var hosturl="127.0.0.1/apk";
-//var hosturl="192.168.1.103/apk";
+//var hosturl="192.168.1.104/apk";

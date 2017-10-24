@@ -95,7 +95,7 @@ $$(".navbar").css('display', 'block');
 $$("#contenthead").css('display', 'none');
 $$(".page-content").removeClass("login-screen-content");
 var calendar='\
-<i id="calendar" class="f7-icons">calendar</i>\
+<i id="calendar" class="f7-icons" report="realtime">calendar</i>\
 ';
 $$("#right_index").append(calendar);
 //var datereport="2017-04-20";
@@ -263,13 +263,111 @@ Chart.plugins.register({
 
 
 $$(document).on("click", "#calendar", function() {
+$$("#contenthead").html("");
 $$("#contenthead").css('display', 'block');
+var report=$$(this).attr("report");
+var proname=$$(this).attr("proname");
+if(report=="realtime"){
+
+var content='\
+<div class="list-block">\
+  <ul>\
+    <li>\
+      <div class="item-content">\
+     <input type="text" placeholder="เลือกวันที่" readonly id="calendar-default" ><i id="search" class="f7-icons" report="'+report+'" proname="'+proname+'">search</i>\
+      </div>\
+    </li>\
+  </ul>\
+</div>\
+';
+var calendarDefault = myApp.calendar({
+    input: '#calendar-default',
+});
+}else {
+  var content='\
+  <div class="list-block">\
+    <ul>\
+      <li>\
+        <div class="item-content">\
+              <input type="text" placeholder="เลือกเดือน" readonly id="picker-input-month"><i id="search" class="f7-icons" report="'+report+'" proname="'+proname+'">search</i>\
+        </div>\
+      </li>\
+    </ul>\
+  </div> \
+  ';
+}
+$$("#contenthead").append(content);
+var formattedDate = new Date();
+var y = formattedDate.getFullYear();
+var array_year=[];
+for (var i = 0; i < 5; i++) {
+  array_year[i]=y-i;
+}
+var array_month=[
+  'มกราคม',
+  'กุมภาพันธ์',
+  'มีนาคม',
+  'เมษายน',
+  'พฤษภาคม',
+  'มิถุนายน',
+  'กรกฎาคม',
+  'สิงหาคม',
+  'กันยายน',
+  'ตุลาคม',
+  'พฤศจิกายน',
+  'ธันวาคม',
+];
+var myPicker = myApp.picker({
+    input: '#picker-input-month',
+    cols: [
+       {
+         values:array_month
+       },
+       {
+         values:array_year
+       }
+     ]
+}
+);
+/*
+var myPicker2 = myApp.picker({
+    input: '#picker-input-month',
+    cols: [
+       {
+         values:array_month
+       }
+     ]
+}
+);
+*/
 });
 
 
 $$(document).on("click", "#search", function() {
 var dateselect=$$("#calendar-default").val();
-gethome(dateselect);
+var report=$$(this).attr("report");
+var proname=$$(this).attr("proname");
+switch (report) {
+  case 'realtime':
+    gethome(dateselect);
+    break;
+    case 'month_report':
+    var dateselectmonth=$$("#picker-input-month").val();
+
+    dateselectmonth=dateselectmonth.split(' ');
+    var monthraw=dateselectmonth[0];
+    var y=dateselectmonth[1];
+    var month=getMonthraw(monthraw)+1;
+    var dateselectnew=y+'-'+month+'-01';
+    //console.log(month);
+    //alert(month);
+    //gethome(dateselect);
+    getDataPro_name(dateselectnew,proname);
+    break;
+  default:
+
+}
+
 });
 
 $$(document).on("click", "#detailrealtime", function() {
@@ -339,6 +437,8 @@ function getdetailrealtime(sawId,datereport) {
 
 
 }//function detailtime
+
+
 
 $$(document).on('page:init', '.page[data-page="detail_realtime_id"]', function (e) {
   // Do something here when page with data-page="about" attribute loaded and initialized
@@ -425,3 +525,152 @@ mainView.router.load({pageName: 'detail_realtime_id'});
 
 
 });
+
+
+
+
+$$(document).on("click", "#month_report", function() {
+  $$("#content").html("");
+  $$("#right_index").html("");
+  $$(".navbar").css('display', 'block');
+  $$("#contenthead").css('display', 'none');
+  $$(".page-content").removeClass("login-screen-content");
+  var proname=$$(this).attr("proname");
+  var calendar='\
+  <i id="calendar" class="f7-icons" report="month_report" proname="'+proname+'">calendar</i>\
+  ';
+  $$("#right_index").append(calendar);
+var content='\
+<div class="toolbar-inner">\
+<a href="#tab1" class="tab-link active">\
+<i class="icon demo-icon-1"></i>fgfg\
+</a>\
+<a href="#tab2" class="tab-link">\
+<i class="icon demo-icon-2"></i>fgfg\
+</a>\
+<a href="#tab3" class="tab-link">\
+<i class="icon demo-icon-3"></i>fgfgf\
+</a>\
+<a href="#tab4" class="tab-link">\
+<i class="icon demo-icon-4"></i>fgfg\
+</a>\
+</div>\
+';
+$$("#tab").append(content);
+
+  dateselect="2017-04-01";
+
+getDataPro_name(dateselect,proname);
+
+});
+
+function getMonth(month) {
+  var array=[
+    'มกราคม',
+    'กุมภาพันธ์',
+    'มีนาคม',
+    'เมษายน',
+    'พฤษภาคม',
+    'มิถุนายน',
+    'กรกฎาคม',
+    'สิงหาคม',
+    'กันยายน',
+    'ตุลาคม',
+    'พฤศจิกายน',
+    'ธันวาคม',
+  ];
+  return array[month-1];
+}
+
+function getMonthraw(month) {
+  var array=[
+    'มกราคม',
+    'กุมภาพันธ์',
+    'มีนาคม',
+    'เมษายน',
+    'พฤษภาคม',
+    'มิถุนายน',
+    'กรกฎาคม',
+    'สิงหาคม',
+    'กันยายน',
+    'ตุลาคม',
+    'พฤศจิกายน',
+    'ธันวาคม',
+  ];
+  var month = array.indexOf(month);
+  return month;
+}
+function getDataPro_name(datenow,proname) {
+  $$("#content").html("");
+  $$("#contenthead").css('display', 'none');
+  var formattedDate = new Date(datenow);
+  var d = formattedDate.getDate();
+  var m =  formattedDate.getMonth();
+  m += 1;  // JavaScript months are 0-11
+  var y = formattedDate.getFullYear();
+  var datereport=y + "-" + m + "-" + d;
+  var datereportshow=d + "/" + m + "/" + y;
+  var email =localStorage.email;
+  var month_name=getMonth(m);
+  console.log(month_name);
+  var content='\
+  <div class="content-block-title">รายงาน '+proname+' ประจำเดือน '+month_name+' ปี '+y+'</div>\
+  ';
+  $$("#content").append(content);
+  var url = "http://"+hosturl+"/api/report_data_pro_name.php";
+  var table='';
+      table+='\
+  <div class="data-table card">\
+  <table>\
+    <thead>\
+      <tr style="position: sticky">\
+        <th style="text-align: center">วันที่</th>\
+        <th style="text-align: center">นำเข้า</th>\
+        <th style="text-align: center">ขาย</th>\
+        <th style="text-align: center">เลื่อย</th>\
+        <th style="text-align: center">คงเหลือ</th>\
+        <th style="text-align: center">สูญเสีย</th>\
+      </tr>\
+    </thead>\
+    <tbody>\
+  ';
+  $$.getJSON( url, {
+      saw_id:'4',
+      datereport:datereport,
+      pro_name:proname
+    }
+  ,function( data ) {
+  console.log(data);
+  var num=1;
+  $$.each(data, function(i, field){
+    console.log(i);
+    console.log(field.wood_income);
+    console.log("num="+num);
+    var modceck=num%2;
+    if (modceck==0) {
+      table+='\
+      <tr style="background-color:#f1f1f1">';
+    }else {
+      table+='\
+      <tr>';
+    }
+    table+='\
+      <td style="text-align: center">'+num+'</td>\
+      <td style="text-align: center">'+field.wood_income+'</td>\
+      <td style="text-align: center">'+field.wood_sale+'</td>\
+      <td style="text-align: center">'+field.timber_saw+'</td>\
+      <td style="text-align: center">'+field.total+'</td>\
+      <td style="text-align: center">'+field.losts+'</td>\
+    </tr>\
+    ';
+    num++;
+});//each
+table+='\
+</tbody>\
+</table>\
+</div>\
+';
+$$("#content").append(table);
+});//getJSON
+
+}

@@ -23,4 +23,4 @@ var mainView = myApp.addView('.view-main', {
 
 //var hosturl="127.0.0.1";
 var hosturl="127.0.0.1/apk";
-//var hosturl="192.168.1.103/apk";
+//var hosturl="192.168.1.104/apk";

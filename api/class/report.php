@@ -155,12 +155,12 @@ public function getWood_pieces($saw_id,$MONTH,$YEAR)
 public function getList($response1,$response2,$response3,$list_day)
 {
 foreach ($list_day as $key =>  $value) {
-$response[$value]['wood_income']=$this->getresponse1($value,$response1);
-$response[$value]['wood_sale']=$this->getresponse2($value,$response2);
+$response["D".$value]['wood_income']=$this->getresponse1($value,$response1);
+$response["D".$value]['wood_sale']=$this->getresponse2($value,$response2);
 $responseqq=$this->getresponse3($value,$response3);
-$response[$value]['timber_saw']=$responseqq['timber_saw'];
-$response[$value]['total']=$responseqq['total'];
-$response[$value]['losts']=$responseqq['losts'];
+$response["D".$value]['timber_saw']=$responseqq['timber_saw'];
+$response["D".$value]['total']=$responseqq['total'];
+$response["D".$value]['losts']=$responseqq['losts'];
   }
 
 return $response;
@@ -168,35 +168,59 @@ return $response;
 
 public function getresponse1($value,$response1)
 {
+  if ($response1!="no") {
   foreach ($response1 as  $value2) {
   if ($value==$value2['date_data']) {
         $response=$value2['weight_total'];
+    }else {
+      $response=0;
     }
-
+}
+}else {
+  $response=0;
 }
 return $response;
 }
 
 public function getresponse2($value,$response2)
 {
+
+  if ($response2!="no") {
   foreach ($response2 as  $value3) {
   if ($value==$value3['date_data']) {
       $response=$value3['weight_total'];
+  }else {
+    $response=0;
   }
     }
+  }else {
+    $response=0;
+  }
     return $response;
 }
 
 public function getresponse3($value,$response3)
 {
+
+  if ($response3!="no") {
   foreach ($response3 as  $key=>$value4) {
 
   if ($value==$value4['date_wood']) {
       $response['timber_saw']=$value4['timber_saw'];
       $response['total']=$value4['total'];
       $response['losts']=$value4['losts'];
+  }else {
+    $response['timber_saw']=0;
+    $response['total']=0;
+    $response['losts']=0;
   }
     }
+  }
+  else {
+    $response['timber_saw']=0;
+    $response['total']=0;
+    $response['losts']=0;
+  }
     return $response;
 }
 
