@@ -10,6 +10,7 @@ getlogin();
 function getlogin() {
 $$("#content").html("");
 $$(".navbar").css('display', 'none');
+$$("#tab").css('display', 'none');
 $$("#contenthead").css('display', 'none');
 $$(".page-content").addClass("login-screen-content");
 var content='\
@@ -61,6 +62,11 @@ var content='\
 ';
 $$("#content").append(content);
 }//getlogin()
+$$(document).on("click", "#home", function() {
+gethome("2017-04-20");
+});
+
+
 
 $$(document).on("click", "#login", function() {
   var email = $$('#email').val();
@@ -93,6 +99,7 @@ $$("#content").html("");
 $$("#right_index").html("");
 $$(".navbar").css('display', 'block');
 $$("#contenthead").css('display', 'none');
+$$("#tab").css('display', 'none');
 $$(".page-content").removeClass("login-screen-content");
 var calendar='\
 <i id="calendar" class="f7-icons" report="realtime">calendar</i>\
@@ -267,6 +274,7 @@ $$("#contenthead").html("");
 $$("#contenthead").css('display', 'block');
 var report=$$(this).attr("report");
 var proname=$$(this).attr("proname");
+var saw_id=$$(this).attr("saw_id");
 if(report=="realtime"){
 
 var content='\
@@ -274,61 +282,65 @@ var content='\
   <ul>\
     <li>\
       <div class="item-content">\
-     <input type="text" placeholder="เลือกวันที่" readonly id="calendar-default" ><i id="search" class="f7-icons" report="'+report+'" proname="'+proname+'">search</i>\
+     <input type="text" placeholder="เลือกวันที่" readonly id="calendar-default" ><i id="search" class="f7-icons" report="'+report+'">search</i>\
       </div>\
     </li>\
   </ul>\
 </div>\
 ';
+$$("#contenthead").append(content);
 var calendarDefault = myApp.calendar({
     input: '#calendar-default',
 });
+console.log(calendarDefault);
 }else {
   var content='\
   <div class="list-block">\
     <ul>\
       <li>\
         <div class="item-content">\
-              <input type="text" placeholder="เลือกเดือน" readonly id="picker-input-month"><i id="search" class="f7-icons" report="'+report+'" proname="'+proname+'">search</i>\
+              <input type="text" placeholder="เลือกเดือน" readonly id="picker-input-month"><i id="search" class="f7-icons" report="'+report+'" proname="'+proname+'" saw_id="'+saw_id+'">search</i>\
         </div>\
       </li>\
     </ul>\
   </div> \
   ';
+  $$("#contenthead").append(content);
+  var formattedDate = new Date();
+  var y = formattedDate.getFullYear();
+  var array_year=[];
+  for (var i = 0; i < 5; i++) {
+    array_year[i]=y-i;
+  }
+  var array_month=[
+    'มกราคม',
+    'กุมภาพันธ์',
+    'มีนาคม',
+    'เมษายน',
+    'พฤษภาคม',
+    'มิถุนายน',
+    'กรกฎาคม',
+    'สิงหาคม',
+    'กันยายน',
+    'ตุลาคม',
+    'พฤศจิกายน',
+    'ธันวาคม',
+  ];
+  var myPicker = myApp.picker({
+      input: '#picker-input-month',
+      cols: [
+         {
+           values:array_month
+         },
+         {
+           values:array_year
+         }
+       ]
+  }
+  );
 }
-$$("#contenthead").append(content);
-var formattedDate = new Date();
-var y = formattedDate.getFullYear();
-var array_year=[];
-for (var i = 0; i < 5; i++) {
-  array_year[i]=y-i;
-}
-var array_month=[
-  'มกราคม',
-  'กุมภาพันธ์',
-  'มีนาคม',
-  'เมษายน',
-  'พฤษภาคม',
-  'มิถุนายน',
-  'กรกฎาคม',
-  'สิงหาคม',
-  'กันยายน',
-  'ตุลาคม',
-  'พฤศจิกายน',
-  'ธันวาคม',
-];
-var myPicker = myApp.picker({
-    input: '#picker-input-month',
-    cols: [
-       {
-         values:array_month
-       },
-       {
-         values:array_year
-       }
-     ]
-}
-);
+
+
 /*
 var myPicker2 = myApp.picker({
     input: '#picker-input-month',
@@ -347,6 +359,7 @@ $$(document).on("click", "#search", function() {
 var dateselect=$$("#calendar-default").val();
 var report=$$(this).attr("report");
 var proname=$$(this).attr("proname");
+var saw_id=$$(this).attr("saw_id");
 switch (report) {
   case 'realtime':
     gethome(dateselect);
@@ -362,8 +375,26 @@ switch (report) {
     //console.log(month);
     //alert(month);
     //gethome(dateselect);
-    getDataPro_name(dateselectnew,proname);
+    getDataPro_name(dateselectnew,proname,saw_id);
     break;
+    case 'profit_report':
+    var dateselectmonth=$$("#picker-input-month").val();
+    dateselectmonth=dateselectmonth.split(' ');
+    var monthraw=dateselectmonth[0];
+    var y=dateselectmonth[1];
+    var month=getMonthraw(monthraw)+1;
+    var dateselectnew=y+'-'+month+'-01';
+    getDataProFit(dateselectnew,saw_id);
+      break;
+      case 'performance_report':
+      var dateselectmonth=$$("#picker-input-month").val();
+      dateselectmonth=dateselectmonth.split(' ');
+      var monthraw=dateselectmonth[0];
+      var y=dateselectmonth[1];
+      var month=getMonthraw(monthraw)+1;
+      var dateselectnew=y+'-'+month+'-01';
+      getDataPerformance(dateselectnew,saw_id);
+        break;
   default:
 
 }
@@ -540,27 +571,18 @@ $$(document).on("click", "#month_report", function() {
   <i id="calendar" class="f7-icons" report="month_report" proname="'+proname+'">calendar</i>\
   ';
   $$("#right_index").append(calendar);
-var content='\
-<div class="toolbar-inner">\
-<a href="#tab1" class="tab-link active">\
-<i class="icon demo-icon-1"></i>fgfg\
-</a>\
-<a href="#tab2" class="tab-link">\
-<i class="icon demo-icon-2"></i>fgfg\
-</a>\
-<a href="#tab3" class="tab-link">\
-<i class="icon demo-icon-3"></i>fgfgf\
-</a>\
-<a href="#tab4" class="tab-link">\
-<i class="icon demo-icon-4"></i>fgfg\
-</a>\
-</div>\
-';
-$$("#tab").append(content);
-
-  dateselect="2017-04-01";
-
-getDataPro_name(dateselect,proname);
+  var formattedDate = new Date();
+  var d = formattedDate.getDate();
+  var m =  formattedDate.getMonth();
+  m += 1;  // JavaScript months are 0-11
+  var y = formattedDate.getFullYear();
+  var datereport=y + "-" + m + "-" + d;
+  var datereportshow=d + "/" + m + "/" + y;
+  var Arrray_SawID=getSawID();
+var saw_id=Arrray_SawID[0].sawId;
+var report="month_report";
+tabs(Arrray_SawID,report,datereport);
+getDataPro_name(datereport,proname,saw_id);
 
 });
 
@@ -600,7 +622,7 @@ function getMonthraw(month) {
   var month = array.indexOf(month);
   return month;
 }
-function getDataPro_name(datenow,proname) {
+function getDataPro_name(datenow,proname,saw_id) {
   $$("#content").html("");
   $$("#contenthead").css('display', 'none');
   var formattedDate = new Date(datenow);
@@ -635,7 +657,7 @@ function getDataPro_name(datenow,proname) {
     <tbody>\
   ';
   $$.getJSON( url, {
-      saw_id:'4',
+      saw_id:saw_id,
       datereport:datereport,
       pro_name:proname
     }
@@ -674,3 +696,387 @@ $$("#content").append(table);
 });//getJSON
 
 }
+
+
+
+$$(document).on("click", "#profit", function() {
+  $$("#content").html("");
+  $$("#right_index").html("");
+  $$("#tab").html("");
+  $$(".navbar").css('display', 'block');
+  $$("#contenthead").css('display', 'none');
+  $$(".page-content").removeClass("login-screen-content");
+  var proname=$$(this).attr("proname");
+  var calendar='\
+  <i id="calendar" class="f7-icons" report="profit_report">calendar</i>\
+  ';
+  $$("#right_index").append(calendar);
+  var formattedDate = new Date();
+  var d = formattedDate.getDate();
+  var m =  formattedDate.getMonth();
+  m += 1;  // JavaScript months are 0-11
+  var y = formattedDate.getFullYear();
+  var datereport=y + "-" + m + "-" + d;
+  var datereportshow=d + "/" + m + "/" + y;
+  var Arrray_SawID=getSawID();
+var saw_id=Arrray_SawID[0].sawId;
+var report="profit_report";
+tabs(Arrray_SawID,report,datereport);
+  getDataProFit(datereport,saw_id);
+});//click
+
+function getDataProFit(datenow,saw_id) {
+  $$("#content").html("");
+  $$("#contenthead").css('display', 'none');
+  var formattedDate = new Date(datenow);
+  var d = formattedDate.getDate();
+  var m =  formattedDate.getMonth();
+  m += 1;  // JavaScript months are 0-11
+  var y = formattedDate.getFullYear();
+  var datereport=y + "-" + m + "-" + d;
+  var datereportshow=d + "/" + m + "/" + y;
+  var email =localStorage.email;
+  var month_name=getMonth(m);
+  console.log(month_name);
+  var content='\
+  <div class="content-block-title">กำไรขาดทุน ประจำเดือน '+month_name+' ปี '+y+'</div>\
+  ';
+  $$("#content").append(content);
+  var url = "http://"+hosturl+"/api/report_data_profit.php";
+  var table='';
+      table+='\
+  <div class="data-table card">\
+  <table>\
+    <thead>\
+      <tr style="position: sticky">\
+        <th style="text-align: center">วันที่</th>\
+        <th style="text-align: center">รายได้</th>\
+        <th style="text-align: center">รายจ่าย</th>\
+        <th style="text-align: center">กำไร</th>\
+        <th style="text-align: center">รายจ่ายคงที่</th>\
+        <th style="text-align: center">กำไรสุทธิ</th>\
+      </tr>\
+    </thead>\
+    <tbody>\
+  ';
+  $$.getJSON( url, {
+      saw_id:saw_id,
+      datereport:datereport,
+    }
+  ,function( data ) {
+  console.log(data);
+  $$.each(data, function(i, field){
+    var modceck=(i+1)%2;
+    if (modceck==0) {
+      table+='\
+      <tr style="background-color:#f1f1f1">';
+    }else {
+      table+='\
+      <tr>';
+    }
+    table+='\
+      <td style="text-align: center">'+field.date+'</td>\
+      <td style="text-align: center">'+field.incoming_total+'</td>\
+      <td style="text-align: center">'+field.outcoming_total+'</td>\
+      <td style="text-align: center">'+field.gross_profit_total+'</td>\
+      <td style="text-align: center">'+field.costs_total+'</td>\
+      <td style="text-align: center">'+field.profit_loss_total+'</td>\
+    </tr>\
+    ';
+  });//each
+  table+='\
+  </tbody>\
+  </table>\
+  </div>\
+  ';
+  $$("#content").append(table);
+  });//getJSON
+
+}//function
+
+
+$$(document).on("click", "#performance", function() {
+  $$("#content").html("");
+  $$("#right_index").html("");
+  $$(".navbar").css('display', 'block');
+  $$("#contenthead").css('display', 'none');
+  $$(".page-content").removeClass("login-screen-content");
+  var calendar='\
+  <i id="calendar" class="f7-icons" report="performance_report">calendar</i>\
+  ';
+  $$("#right_index").append(calendar);
+  var formattedDate = new Date();
+  var d = formattedDate.getDate();
+  var m =  formattedDate.getMonth();
+  m += 1;  // JavaScript months are 0-11
+  var y = formattedDate.getFullYear();
+  var datereport=y + "-" + m + "-" + d;
+  var Arrray_SawID=getSawID();
+var saw_id=Arrray_SawID[0].sawId;
+var report="performance_report";
+tabs(Arrray_SawID,report,datereport);
+  getDataPerformance(datereport,saw_id);
+});//click
+
+function getDataPerformance(datenow,saw_id) {
+  $$("#content").html("");
+  $$("#contenthead").css('display', 'none');
+  var formattedDate = new Date(datenow);
+  var d = formattedDate.getDate();
+  var m =  formattedDate.getMonth();
+  m += 1;  // JavaScript months are 0-11
+  var y = formattedDate.getFullYear();
+  var datereport=y + "-" + m + "-" + d;
+  var datereportshow=d + "/" + m + "/" + y;
+  var email =localStorage.email;
+  var month_name=getMonth(m);
+  console.log(month_name);
+  var content='\
+  <div class="content-block-title">ประสิทธิภาพ เดือน '+month_name+' ปี '+y+'</div>\
+  <div class="card">\
+      <div class="card-content">\
+          <div class="card-content-inner"><canvas id="myChart" width="600" height="400"></canvas></div>\
+      </div>\
+      </div>\
+  ';
+  $$("#content").append(content);
+  var url = "http://"+hosturl+"/api/report_data_performance.php";
+  var table='';
+      table+='\
+  <div class="data-table card">\
+  <table>\
+    <thead>\
+      <tr style="position: sticky">\
+        <th style="text-align: center">วันที่</th>\
+        <th style="text-align: center">ปริมาณการผลิต/เป้าหมาย</th>\
+        <th style="text-align: center">ab/เป้าหมาย</th>\
+        <th style="text-align: center">ab+c/เป้าหมาย</th>\
+      </tr>\
+    </thead>\
+    <tbody>\
+  ';
+  var sum_volume_product=0;
+  var sum_volume_product_goal=0;
+  var sum_ab=0;
+  var sum_ab_goal=0;
+  var sum_ab_c=0;
+  var sum__ab_c_goal=0;
+
+  $$.getJSON( url, {
+      saw_id:saw_id,
+      datereport:datereport,
+    }
+  ,function( data ) {
+  console.log(data);
+  $$.each(data, function(i, field){
+    sum_volume_product+=parseInt(field.volume_product);
+    sum_volume_product_goal+=parseInt(field.volume_product_goal);
+    sum_ab+=parseInt(field.ab);
+    sum_ab_goal+=parseInt(field.ab_goal);
+    sum_ab_c+=parseInt(field.ab_c);
+    sum__ab_c_goal+=parseInt(field.ab_c_goal);
+    var modceck=(i+1)%2;
+    if (modceck==0) {
+      table+='\
+      <tr style="background-color:#f1f1f1">';
+    }else {
+      table+='\
+      <tr>';
+    }
+    table+='\
+      <td style="text-align: center">'+field.date+'</td>\
+      <td style="text-align: center">'+Number(field.volume_product).toLocaleString()+'/'+Number(field.volume_product_goal).toLocaleString()+'</td>\
+      <td style="text-align: center">'+Number(field.ab).toLocaleString()+'/'+Number(field.ab_goal).toLocaleString()+'</td>\
+      <td style="text-align: center">'+Number(field.ab_c).toLocaleString()+'/'+Number(field.ab_c_goal).toLocaleString()+'</td>\
+    </tr>\
+    ';
+  });//each
+  table+='\
+    <tr style="background-color:#c4e487">\
+    <td style="text-align: center">รวม</td>\
+    <td style="text-align: center">'+sum_volume_product.toLocaleString()+'/'+sum_volume_product_goal.toLocaleString()+'</td>\
+    <td style="text-align: center">'+sum_ab.toLocaleString()+'/'+sum_ab_goal.toLocaleString()+'</td>\
+    <td style="text-align: center">'+sum_ab_c.toLocaleString()+'/'+sum__ab_c_goal.toLocaleString()+'</td>\
+  </tr>\
+  </tbody>\
+  </table>\
+  </div>\
+  ';
+  $$("#content").append(table);
+  console.log(sum__ab_c_goal.toLocaleString());
+
+
+  var backgroundColor = [
+  	'rgb(255, 99, 132)',
+  	'rgb(54, 162, 235)'
+  ];
+  var label=["Volume", "AB", "AB+C"];
+  var data1=[sum_volume_product,sum_ab,sum_ab_c];
+  var data2=[sum_volume_product_goal,sum_ab_goal,sum__ab_c_goal];
+
+  var datasets=[
+{
+  						label: 'ผลการผลิต',
+  						data:data1,
+  						backgroundColor:backgroundColor[0]
+  				},
+  						{label: 'เป้าหมาย',
+  						data:data2 ,
+  						backgroundColor:backgroundColor[1]
+  								}
+];
+
+  console.log(label);
+  console.log(datasets);
+grap(label,datasets);
+
+  });//getJSON
+
+
+  function grap(label,datasets) {
+    var ctx = document.getElementById("myChart").getContext('2d');
+  var myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+          labels: label,
+          datasets:datasets
+      },
+      options: {
+        tooltips: {
+    mode: 'index',
+    intersect: false
+},
+responsive: true,
+          scales: {
+            xAxes: [{
+                                       stacked: true,
+                                   }],
+                                   yAxes: [{
+                                       stacked: true
+                                   }]
+          }
+      }
+  });
+  Chart.plugins.register({
+      afterDatasetsDraw: function(chart, easing) {
+          // To only draw at the end of animation, check for easing === 1
+          var ctx = chart.ctx;
+
+          chart.data.datasets.forEach(function (dataset, i) {
+              var meta = chart.getDatasetMeta(i);
+              if (!meta.hidden) {
+                  meta.data.forEach(function(element, index) {
+                      // Draw the text in black, with the specified font
+                      ctx.fillStyle = 'rgb(0, 0, 0)';
+
+                      var fontSize = 10;
+                      var fontStyle = 'normal';
+                      var fontFamily = 'Helvetica Neue';
+                      ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
+
+                      // Just naively convert to string for now
+                      var dataString = dataset.data[index].toString();
+
+                      // Make sure alignment settings are correct
+                      ctx.textAlign = 'center';
+                      ctx.textBaseline = 'middle';
+
+                      var padding = 5;
+                      var position = element.tooltipPosition();
+                      ctx.fillText(dataString, position.x, position.y - (fontSize / 2) - padding);
+                  });
+              }
+          });
+      }
+  });
+  }
+
+}//function
+
+
+
+function getSawID() {
+var email =localStorage.email;
+var result="";
+var url = "http://"+hosturl+"/api/get_user.php?email="+email;
+/*
+result=$$.getJSON( url, {
+    email:email,
+  }
+);
+return result;
+*/
+$.ajax({
+   url: url,
+   type: 'get',
+   dataType: 'json',
+   async: false,
+   success: function(data) {
+       result = data;
+   }
+});
+return result;
+}
+
+
+function tabs(data,report,date) {
+  $$("#tab").html("");
+  $$("#tabs").html("");
+  $$("#tab").css('display', 'block');
+  var content='\
+  <div class="toolbar-inner">\
+  ';
+  var content2='';
+  $$.each(data, function(i, field){
+    if (i==0) {
+      content+='\
+      <a id="tab_menu" datetime="'+date+'" report="'+report+'" saw_id="'+field.sawId+'" href="#tab'+(i+1)+'" class="tab-link active">\
+      <i class="icon demo-icon-1"></i>'+field.shortname+'\
+      </a>\
+      ';
+      content2+='\
+      <div id="tab'+(i+1)+'" class="tab active">\
+      </div>\
+      ';
+      var add_saw_id=$$("#calendar").attr("saw_id",field.sawId);
+    }else{
+      content+='\
+      <a id="tab_menu" datetime="'+date+'" report="'+report+'" saw_id="'+field.sawId+'" href="#tab'+(i+1)+'" class="tab-link">\
+      <i class="icon demo-icon-1"></i>'+field.shortname+'\
+      </a>\
+      ';
+      content2+='\
+      <div id="tab'+(i+1)+'" class="tab">\
+      </div>\
+      ';
+    }
+
+  });
+    content+='\
+    </div>\
+    ';
+    $$("#tab").append(content);
+    $$("#tabs").append(content2);
+}
+
+
+$$(document).on("click", "#tab_menu", function() {
+var report=$$(this).attr("report");
+var datereport=$$(this).attr("datetime");
+var saw_id=$$(this).attr("saw_id");
+var add_saw_id=$$("#calendar").attr("saw_id",saw_id);
+switch (report) {
+  case 'performance_report':
+    getDataPerformance(datereport,saw_id);
+    break;
+    case 'profit_report':
+      getDataProFit(datereport,saw_id);
+      break;
+      case 'month_report':
+      var proname=$$("#calendar").attr("proname");
+        getDataPro_name(datereport,proname,saw_id);
+        break;
+  default:
+
+}
+});//click

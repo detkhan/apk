@@ -222,7 +222,85 @@ public function getresponse3($value,$response3)
     $response['losts']=0;
   }
     return $response;
+}//function
+
+public function getProfitLoss($saw_id,$month,$year)
+{
+  $clsMyDB = new MyDatabase();
+  $strCondition2 = "
+  SELECT *  FROM `profit_loss` WHERE
+   sawId = '$saw_id' and MONTH(datetime)='$month'
+   and YEAR(datetime)='$year'  ORDER BY date(datetime) ASC ";
+     $objSelect2 = $clsMyDB->fncSelectRecord($strCondition2);
+     if(!$objSelect2)
+     {
+     $response="no";
+     }
+     else{
+       foreach ($objSelect2 as $value) {
+         $response[] =
+         [
+           'date' => date("d",strtotime($value['datetime'])),
+           'incoming_total' => number_format($value['incoming_total']),
+           'outcoming_total' => number_format($value['outcoming_total']),
+           'gross_profit_total' => number_format($value['gross_profit_total']),
+           'costs_total' => number_format($value['costs_total']),
+           'profit_loss_total' => number_format($value['profit_loss_total']),
+         ];
+       }
+     }
+       return $response;
+}//function
+
+public function getPerformance($saw_id,$month,$year)
+{
+  $clsMyDB = new MyDatabase();
+  $strCondition2 = "
+  SELECT volume_product,volume_product_goal,ab,ab_goal,ab_c,ab_c_goal,datetime FROM
+  (
+  SELECT * FROM
+  (SELECT volume_product as ab ,datetime as dateab FROM `performance` WHERE
+   sawId = '$saw_id' and MONTH(datetime)='$month'
+   and YEAR(datetime)='$year' AND performance_type = 'AB/Goals'  ORDER BY date(datetime) ASC) as ab
+  INNER JOIN
+  (SELECT volume_product as volume_product_goal,ab as ab_goal,ab_c as ab_c_goal ,datetime FROM performance_goals WHERE sawId = '$saw_id' and MONTH(datetime)='$month'
+   and YEAR(datetime)='$year' ORDER BY date(datetime) ASC) as ab_goal
+  ON ab.dateab= ab_goal.datetime
+  INNER JOIN
+  (SELECT volume_product as volume_product ,datetime as datevo FROM `performance` WHERE
+   sawId = '$saw_id' and MONTH(datetime)='$month'
+   and YEAR(datetime)='$year' AND performance_type = 'Volume_Product/Goals'  ORDER BY date(datetime) ASC) as vo
+  ON vo.datevo= ab_goal.datetime
+  INNER JOIN
+  (SELECT volume_product as ab_c ,datetime as dateabc FROM `performance` WHERE
+   sawId = '$saw_id' and MONTH(datetime)='$month'
+   and YEAR(datetime)='$year' AND performance_type = 'Volume_Product/Goals'  ORDER BY date(datetime) ASC) as abc
+  ON vo.datevo= abc.dateabc
+)
+as a";
+     $objSelect2 = $clsMyDB->fncSelectRecord($strCondition2);
+     if(!$objSelect2)
+     {
+     $response="no";
+     }
+     else{
+       foreach ($objSelect2 as $value) {
+         $response[] =
+         [
+           'date' => date("d",strtotime($value['datetime'])),
+           'volume_product' => $value['volume_product'],
+           'volume_product_goal' => $value['volume_product_goal'],
+           'ab' => $value['ab'],
+           'ab_goal' => $value['ab_goal'],
+           'ab_c' => $value['ab_c'],
+           'ab_c_goal' => $value['ab_c_goal'],
+         ];
+       }
+     }
+       return $response;
 }
+
+
 
 
 }//class
