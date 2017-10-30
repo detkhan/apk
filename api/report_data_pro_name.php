@@ -12,7 +12,14 @@ $ob_report= new report;
 $response1=$ob_report->getDataPro_name($saw_id,$MONTH,$YEAR,$pro_name,$type1);
 $response2=$ob_report->getDataPro_name($saw_id,$MONTH,$YEAR,$pro_name,$type2);
 $list_day=$ob_report->getlistDay($MONTH,$YEAR);
+switch ($pro_name) {
+  case 'ไม้ท่อน':
 $response3=$ob_report->getWood_pieces($saw_id,$MONTH,$YEAR);
+    break;
+    case 'ไม้ฟืน':
+$response3=$ob_report->getFire_wood($saw_id,$MONTH,$YEAR);
+break;
+}
 $response=$ob_report->getList($response1,$response2,$response3,$list_day);
 /*
 $response[0] =

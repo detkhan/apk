@@ -1,7 +1,13 @@
 checkcookies();
 function checkcookies() {
 if(localStorage.email){
-gethome("2017-04-20");
+  var formattedDate = new Date();
+  var d = formattedDate.getDate();
+  var m =  formattedDate.getMonth();
+  m += 1;  // JavaScript months are 0-11
+  var y = formattedDate.getFullYear();
+  var datereport=y + "-" + m + "-" + d;
+gethome(datereport);
 }else{
 getlogin();
 }
@@ -63,7 +69,13 @@ var content='\
 $$("#content").append(content);
 }//getlogin()
 $$(document).on("click", "#home", function() {
-gethome("2017-04-20");
+  var formattedDate = new Date();
+  var d = formattedDate.getDate();
+  var m =  formattedDate.getMonth();
+  m += 1;  // JavaScript months are 0-11
+  var y = formattedDate.getFullYear();
+  var datereport=y + "-" + m + "-" + d;
+gethome(datereport);
 });
 
 
@@ -84,7 +96,13 @@ myApp.alert("Wong Password !", 'APK MASTER');
 }else{
 localStorage.email=email;
 localStorage.fullname=field.fullname;
-gethome("2017-04-20");
+var formattedDate = new Date();
+var d = formattedDate.getDate();
+var m =  formattedDate.getMonth();
+m += 1;  // JavaScript months are 0-11
+var y = formattedDate.getFullYear();
+var datereport=y + "-" + m + "-" + d;
+gethome(datereport);
 }
 
 
@@ -94,17 +112,28 @@ gethome("2017-04-20");
 
 });//click login
 
+$$(document).on("click", "#logout", function() {
+myApp.closePanel();
+myApp.alert("ออกจากระบบ", 'APK MASTER');
+localStorage.removeItem("email");
+localStorage.removeItem("fullname");
+getlogin();
+});//click logout
 function gethome(datenow) {
 $$("#content").html("");
 $$("#right_index").html("");
+$$("#fullname").html("");
 $$(".navbar").css('display', 'block');
 $$("#contenthead").css('display', 'none');
 $$("#tab").css('display', 'none');
 $$(".page-content").removeClass("login-screen-content");
 var calendar='\
-<i id="calendar" class="f7-icons" report="realtime">calendar</i>\
+<i id="calendars" class="f7-icons" report="realtime">calendar</i>\
 ';
+
 $$("#right_index").append(calendar);
+var fullname='<i id="calendars" class="f7-icons" report="realtime">person</i>  '+localStorage.fullname;
+$$("#fullname").append(fullname);
 //var datereport="2017-04-20";
 //var datereport = new Date("2017-04-20");
 var formattedDate = new Date(datenow);
@@ -269,7 +298,7 @@ Chart.plugins.register({
 
 
 
-$$(document).on("click", "#calendar", function() {
+$$(document).on("click", "#calendars", function() {
 $$("#contenthead").html("");
 $$("#contenthead").css('display', 'block');
 var report=$$(this).attr("report");
@@ -567,8 +596,10 @@ $$(document).on("click", "#month_report", function() {
   $$("#contenthead").css('display', 'none');
   $$(".page-content").removeClass("login-screen-content");
   var proname=$$(this).attr("proname");
+  var Arrray_SawID=getSawID();
+var saw_id=Arrray_SawID[0].sawId;
   var calendar='\
-  <i id="calendar" class="f7-icons" report="month_report" proname="'+proname+'">calendar</i>\
+  <i id="calendars" class="f7-icons" report="month_report" proname="'+proname+'" saw_id="'+saw_id+'">calendar</i>\
   ';
   $$("#right_index").append(calendar);
   var formattedDate = new Date();
@@ -578,10 +609,8 @@ $$(document).on("click", "#month_report", function() {
   var y = formattedDate.getFullYear();
   var datereport=y + "-" + m + "-" + d;
   var datereportshow=d + "/" + m + "/" + y;
-  var Arrray_SawID=getSawID();
-var saw_id=Arrray_SawID[0].sawId;
 var report="month_report";
-tabs(Arrray_SawID,report,datereport);
+tabs(Arrray_SawID,report,datereport,proname);
 getDataPro_name(datereport,proname,saw_id);
 
 });
@@ -656,6 +685,11 @@ function getDataPro_name(datenow,proname,saw_id) {
     </thead>\
     <tbody>\
   ';
+  var sum_wood_income=0;
+  var sum_wood_sale=0;
+  var sum_timber_saw=0;
+  var sum_total=0;
+  var sum_losts=0;
   $$.getJSON( url, {
       saw_id:saw_id,
       datereport:datereport,
@@ -665,9 +699,6 @@ function getDataPro_name(datenow,proname,saw_id) {
   console.log(data);
   var num=1;
   $$.each(data, function(i, field){
-    console.log(i);
-    console.log(field.wood_income);
-    console.log("num="+num);
     var modceck=num%2;
     if (modceck==0) {
       table+='\
@@ -676,18 +707,40 @@ function getDataPro_name(datenow,proname,saw_id) {
       table+='\
       <tr>';
     }
+    var wood_income=checknull(field.wood_income);
+    var wood_sale=checknull(field.wood_sale);
+    var timber_saw=checknull(field.timber_saw);
+    var total=checknull(field.total);
+    var losts=checknull(field.losts);
+    if (wood_income !=0 || wood_sale !=0 || timber_saw !=0 || total !=0 || losts !=0) {
+    console.log("yes");
+
     table+='\
       <td style="text-align: center">'+num+'</td>\
-      <td style="text-align: center">'+field.wood_income+'</td>\
-      <td style="text-align: center">'+field.wood_sale+'</td>\
-      <td style="text-align: center">'+field.timber_saw+'</td>\
-      <td style="text-align: center">'+field.total+'</td>\
-      <td style="text-align: center">'+field.losts+'</td>\
+      <td style="text-align: center">'+Number(wood_income).toLocaleString()+'</td>\
+      <td style="text-align: center">'+Number(wood_sale).toLocaleString()+'</td>\
+      <td style="text-align: center">'+Number(timber_saw).toLocaleString()+'</td>\
+      <td style="text-align: center">'+Number(total).toLocaleString()+'</td>\
+      <td style="text-align: center">'+Number(losts).toLocaleString()+'</td>\
     </tr>\
     ';
+    sum_wood_income+=parseFloat(wood_income);
+    sum_wood_sale+=parseFloat(wood_sale);
+    sum_timber_saw+=parseFloat(timber_saw);
+    sum_total+=parseFloat(total);
+    sum_losts+=parseFloat(losts);
+    }
     num++;
 });//each
 table+='\
+<tr style="background-color:#c4e487">\
+<td style="text-align: center">รวม</td>\
+<td style="text-align: center">'+sum_wood_income.toLocaleString()+'</td>\
+<td style="text-align: center">'+sum_wood_sale.toLocaleString()+'</td>\
+<td style="text-align: center">'+sum_timber_saw.toLocaleString()+'</td>\
+<td style="text-align: center">'+sum_total.toLocaleString()+'</td>\
+<td style="text-align: center">'+sum_losts.toLocaleString()+'</td>\
+</tr>\
 </tbody>\
 </table>\
 </div>\
@@ -695,6 +748,18 @@ table+='\
 $$("#content").append(table);
 });//getJSON
 
+}//function
+
+function checknull(data) {
+  var result='';
+
+  if (!data) {
+    result=0;
+
+  }else {
+    result=data;
+  }
+  return result;
 }
 
 
@@ -707,8 +772,10 @@ $$(document).on("click", "#profit", function() {
   $$("#contenthead").css('display', 'none');
   $$(".page-content").removeClass("login-screen-content");
   var proname=$$(this).attr("proname");
+  var Arrray_SawID=getSawID();
+var saw_id=Arrray_SawID[0].sawId;
   var calendar='\
-  <i id="calendar" class="f7-icons" report="profit_report">calendar</i>\
+  <i id="calendars" class="f7-icons" report="profit_report" saw_id="'+saw_id+'">calendar</i>\
   ';
   $$("#right_index").append(calendar);
   var formattedDate = new Date();
@@ -718,10 +785,8 @@ $$(document).on("click", "#profit", function() {
   var y = formattedDate.getFullYear();
   var datereport=y + "-" + m + "-" + d;
   var datereportshow=d + "/" + m + "/" + y;
-  var Arrray_SawID=getSawID();
-var saw_id=Arrray_SawID[0].sawId;
 var report="profit_report";
-tabs(Arrray_SawID,report,datereport);
+tabs(Arrray_SawID,report,datereport,proname);
   getDataProFit(datereport,saw_id);
 });//click
 
@@ -759,6 +824,11 @@ function getDataProFit(datenow,saw_id) {
     </thead>\
     <tbody>\
   ';
+  var sum_incoming_total=0;
+  var sum_outcoming_total=0;
+  var sum_gross_profit_total=0;
+  var sum_costs_total=0;
+  var sum_profit_loss_total=0;
   $$.getJSON( url, {
       saw_id:saw_id,
       datereport:datereport,
@@ -775,16 +845,29 @@ function getDataProFit(datenow,saw_id) {
       <tr>';
     }
     table+='\
-      <td style="text-align: center">'+field.date+'</td>\
-      <td style="text-align: center">'+field.incoming_total+'</td>\
-      <td style="text-align: center">'+field.outcoming_total+'</td>\
-      <td style="text-align: center">'+field.gross_profit_total+'</td>\
-      <td style="text-align: center">'+field.costs_total+'</td>\
-      <td style="text-align: center">'+field.profit_loss_total+'</td>\
+      <td style="text-align: center">'+Number(field.date).toLocaleString()+'</td>\
+      <td style="text-align: center">'+Number(field.incoming_total).toLocaleString()+'</td>\
+      <td style="text-align: center">'+Number(field.outcoming_total).toLocaleString()+'</td>\
+      <td style="text-align: center">'+Number(field.gross_profit_total).toLocaleString()+'</td>\
+      <td style="text-align: center">'+Number(field.costs_total).toLocaleString()+'</td>\
+      <td style="text-align: center">'+Number(field.profit_loss_total).toLocaleString()+'</td>\
     </tr>\
     ';
+    sum_incoming_total+=parseFloat(field.incoming_total);
+    sum_outcoming_total+=parseFloat(field.outcoming_total);
+    sum_gross_profit_total+=parseFloat(field.gross_profit_total);
+    sum_costs_total+=parseFloat(field.costs_total);
+    sum_profit_loss_total+=parseFloat(field.profit_loss_total);
   });//each
   table+='\
+  <tr>\
+  <td style="text-align: center">รวม</td>\
+  <td style="text-align: center">'+sum_incoming_total.toLocaleString()+'</td>\
+  <td style="text-align: center">'+sum_outcoming_total.toLocaleString()+'</td>\
+  <td style="text-align: center">'+sum_gross_profit_total.toLocaleString()+'</td>\
+  <td style="text-align: center">'+sum_costs_total.toLocaleString()+'</td>\
+  <td style="text-align: center">'+sum_profit_loss_total.toLocaleString()+'</td>\
+</tr>\
   </tbody>\
   </table>\
   </div>\
@@ -801,8 +884,10 @@ $$(document).on("click", "#performance", function() {
   $$(".navbar").css('display', 'block');
   $$("#contenthead").css('display', 'none');
   $$(".page-content").removeClass("login-screen-content");
+  var Arrray_SawID=getSawID();
+var saw_id=Arrray_SawID[0].sawId;
   var calendar='\
-  <i id="calendar" class="f7-icons" report="performance_report">calendar</i>\
+  <i id="calendars" class="f7-icons" report="performance_report" proname=" " saw_id="'+saw_id+'">calendar</i>\
   ';
   $$("#right_index").append(calendar);
   var formattedDate = new Date();
@@ -811,10 +896,9 @@ $$(document).on("click", "#performance", function() {
   m += 1;  // JavaScript months are 0-11
   var y = formattedDate.getFullYear();
   var datereport=y + "-" + m + "-" + d;
-  var Arrray_SawID=getSawID();
-var saw_id=Arrray_SawID[0].sawId;
+
 var report="performance_report";
-tabs(Arrray_SawID,report,datereport);
+tabs(Arrray_SawID,report,datereport,'');
   getDataPerformance(datereport,saw_id);
 });//click
 
@@ -869,12 +953,12 @@ function getDataPerformance(datenow,saw_id) {
   ,function( data ) {
   console.log(data);
   $$.each(data, function(i, field){
-    sum_volume_product+=parseInt(field.volume_product);
-    sum_volume_product_goal+=parseInt(field.volume_product_goal);
-    sum_ab+=parseInt(field.ab);
-    sum_ab_goal+=parseInt(field.ab_goal);
-    sum_ab_c+=parseInt(field.ab_c);
-    sum__ab_c_goal+=parseInt(field.ab_c_goal);
+    sum_volume_product+=parseFloat(field.volume_product);
+    sum_volume_product_goal+=parseFloat(field.volume_product_goal);
+    sum_ab+=parseFloat(field.ab);
+    sum_ab_goal+=parseFloat(field.ab_goal);
+    sum_ab_c+=parseFloat(field.ab_c);
+    sum__ab_c_goal+=parseFloat(field.ab_c_goal);
     var modceck=(i+1)%2;
     if (modceck==0) {
       table+='\
@@ -1019,7 +1103,7 @@ return result;
 }
 
 
-function tabs(data,report,date) {
+function tabs(data,report,date,proname) {
   $$("#tab").html("");
   $$("#tabs").html("");
   $$("#tab").css('display', 'block');
@@ -1030,7 +1114,7 @@ function tabs(data,report,date) {
   $$.each(data, function(i, field){
     if (i==0) {
       content+='\
-      <a id="tab_menu" datetime="'+date+'" report="'+report+'" saw_id="'+field.sawId+'" href="#tab'+(i+1)+'" class="tab-link active">\
+      <a id="tab_menu" datetime="'+date+'" report="'+report+'" saw_id="'+field.sawId+'" proname="'+proname+'" href="#tab'+(i+1)+'" class="tab-link active">\
       <i class="icon demo-icon-1"></i>'+field.shortname+'\
       </a>\
       ';
@@ -1038,10 +1122,10 @@ function tabs(data,report,date) {
       <div id="tab'+(i+1)+'" class="tab active">\
       </div>\
       ';
-      var add_saw_id=$$("#calendar").attr("saw_id",field.sawId);
+      var add_saw_id=$$("#calendars").attr("saw_id",field.sawId);
     }else{
       content+='\
-      <a id="tab_menu" datetime="'+date+'" report="'+report+'" saw_id="'+field.sawId+'" href="#tab'+(i+1)+'" class="tab-link">\
+      <a id="tab_menu" datetime="'+date+'" report="'+report+'" saw_id="'+field.sawId+'" proname="'+proname+'" href="#tab'+(i+1)+'" class="tab-link">\
       <i class="icon demo-icon-1"></i>'+field.shortname+'\
       </a>\
       ';
@@ -1064,7 +1148,15 @@ $$(document).on("click", "#tab_menu", function() {
 var report=$$(this).attr("report");
 var datereport=$$(this).attr("datetime");
 var saw_id=$$(this).attr("saw_id");
-var add_saw_id=$$("#calendar").attr("saw_id",saw_id);
+var proname=$$(this).attr("proname");
+//var add_saw_id=$$("#calendars").attr("saw_id",saw_id);
+
+var add_saw_id=$("#calendars").removeAttr("style");
+$$("#right_index").html("");
+var calendar='\
+<i id="calendars" class="f7-icons" report="'+report+'" proname="'+proname+'" saw_id="'+saw_id+'">calendar</i>\
+';
+$$("#right_index").append(calendar);
 switch (report) {
   case 'performance_report':
     getDataPerformance(datereport,saw_id);
@@ -1073,7 +1165,6 @@ switch (report) {
       getDataProFit(datereport,saw_id);
       break;
       case 'month_report':
-      var proname=$$("#calendar").attr("proname");
         getDataPro_name(datereport,proname,saw_id);
         break;
   default:

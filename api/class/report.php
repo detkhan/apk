@@ -152,6 +152,32 @@ public function getWood_pieces($saw_id,$MONTH,$YEAR)
        return $response;
 }
 
+public function getFire_wood($saw_id,$MONTH,$YEAR)
+{
+  $clsMyDB = new MyDatabase();
+  $strCondition2 = "
+  SELECT firewood_total,firewood_losts,datetime as date_wood   FROM `fire_wood` WHERE
+   sawId = '$saw_id' and MONTH(datetime)='$MONTH'
+   and YEAR(datetime)='$YEAR'  ORDER BY date(datetime) ASC ";
+     $objSelect2 = $clsMyDB->fncSelectRecord($strCondition2);
+     if(!$objSelect2)
+     {
+     $response="no";
+     }
+     else{
+       foreach ($objSelect2 as $value) {
+         $response[] =
+         [
+           'date_wood' => date("d",strtotime($value['date_wood'])),
+           'timber_saw' => "0",
+           'total' => $value['firewood_total'],
+           'losts' => $value['firewood_losts'],
+         ];
+       }
+     }
+       return $response;
+}
+
 public function getList($response1,$response2,$response3,$list_day)
 {
 foreach ($list_day as $key =>  $value) {
@@ -172,8 +198,6 @@ public function getresponse1($value,$response1)
   foreach ($response1 as  $value2) {
   if ($value==$value2['date_data']) {
         $response=$value2['weight_total'];
-    }else {
-      $response=0;
     }
 }
 }else {
@@ -189,8 +213,6 @@ public function getresponse2($value,$response2)
   foreach ($response2 as  $value3) {
   if ($value==$value3['date_data']) {
       $response=$value3['weight_total'];
-  }else {
-    $response=0;
   }
     }
   }else {
@@ -241,11 +263,11 @@ public function getProfitLoss($saw_id,$month,$year)
          $response[] =
          [
            'date' => date("d",strtotime($value['datetime'])),
-           'incoming_total' => number_format($value['incoming_total']),
-           'outcoming_total' => number_format($value['outcoming_total']),
-           'gross_profit_total' => number_format($value['gross_profit_total']),
-           'costs_total' => number_format($value['costs_total']),
-           'profit_loss_total' => number_format($value['profit_loss_total']),
+           'incoming_total' => $value['incoming_total'],
+           'outcoming_total' => $value['outcoming_total'],
+           'gross_profit_total' => $value['gross_profit_total'],
+           'costs_total' => $value['costs_total'],
+           'profit_loss_total' => $value['profit_loss_total'],
          ];
        }
      }
