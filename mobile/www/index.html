@@ -7,8 +7,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <title>APK MASTER</title>
-    <link rel="stylesheet" href="https://framework7.io/dist/css/framework7.ios.min.css">
-    <link rel="stylesheet" href="https://framework7.io/dist/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" href="css/framework7.ios.min.css">
+    <link rel="stylesheet" href="css/framework7.ios.colors.min.css">
     <link href="http://fonts.googleapis.com/css?family=Roboto:400,300,500,700" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="css/material-icons.css">
@@ -43,14 +43,29 @@
         <div class="content-block">
           <div class="list-block">
         <ul>
-          <li class="item-content">
+          <li id="month_report" proname="ไม้ท่อน" class="item-content">
             <div class="item-inner">
-              <div class="item-title" id="month_report" proname="ไม้ท่อน">ไม้ท่อน</div>
+              <div class="item-title" >ไม้ท่อน</div>
             </div>
           </li>
-          <li class="item-content">
+          <li id="month_report" proname="ไม้ฟืน" class="item-content">
             <div class="item-inner">
-              <div class="item-title" id="month_report" proname="ไม้ฟืน">ไม้ฟืน</div>
+              <div class="item-title" >ไม้ฟืน</div>
+            </div>
+          </li>
+          <li id="month_report" proname="ไม้เกรด" class="item-content">
+            <div class="item-inner">
+              <div class="item-title">ไม้เกรด</div>
+            </div>
+          </li>
+          <li id="month_report" proname="ปีกไม้" class="item-content">
+            <div class="item-inner">
+              <div class="item-title">ปีกไม้</div>
+            </div>
+          </li>
+          <li id="month_report" proname="ขี้เลื่อย" class="item-content">
+            <div class="item-inner">
+              <div class="item-title">ขี้เลื่อย</div>
             </div>
           </li>
         </ul>
@@ -97,8 +112,8 @@
               <div class="navbar">
                 <div class="navbar-inner">
                   <!-- We need cool sliding animation on title element, so we have additional "sliding" class -->
-                  <div class="left">
-                  <a href="#" class="open-panel link icon-only"><i class="icon icon-bars"></i></a>
+                  <div id="left_index" class="left">
+                  <a href="#" class="open-panel link icon-only"><i class="f7-icons" style="font-size: 30px;">bars</i></a>
                   </div><!--navbar-left-->
                   <div class="center">APK MASTER</div>
                   <div id="right_index" class="right">
@@ -109,7 +124,7 @@
               <div id="tab" class="toolbar tabbar">
 
         </div>
-              <div class="page-content">
+              <div class="page-content pull-to-refresh-content">
 
                               <div id="contenthead">
 
@@ -119,103 +134,42 @@
 
 
 
-
                               <div id="tabs_block" class="content-block">
                               <div id="tabs" class="tabs">
                               </div>
                               </div>
 
+        </div><!--page content-->
 
-                            </div><!--page content-->
-                          </div><!--page index-->
+        <div class="page cached" data-page="list">
+          <div class="navbar">
+            <div class="navbar-inner">
+              <!-- We need cool sliding animation on title element, so we have additional "sliding" class -->
+              <div class="left">
+              <a href="#index" class="icon-only back"><i class="icon icon-back"></i></a>
+              </div><!--navbar-left-->
+              <div class="center">APK MASTER</div>
+            </div><!--navbar-inner-->
+          </div><!--navbar-->
 
-                          <div class="page cached" data-page="detail_realtime">
-                            <!--navbar-->
-                          <div class="navbar">
-                            <div class="navbar-inner">
-                              <!-- We need cool sliding animation on title element, so we have additional "sliding" class -->
-                              <div class="left">
-                              <a href="#index" class="icon-only"><i class="icon icon-back"></i></a>
-                              </div><!--navbar-left-->
-                              <div class="center">Detail</div>
-                              <div id="right_detail" class="right">
-                              </div><!--navbar-right-->
-                            </div><!--navbar-inner-->
+        <div class="page-content">
+                                  <div id="content_detail"></div>
+        </div><!--page content-->
 
-                          </div><!--navbar-->
+  <div class="page cached" data-page="listdetail">
+    <div class="navbar">
+      <div class="navbar-inner">
+        <!-- We need cool sliding animation on title element, so we have additional "sliding" class -->
+        <div class="left">
+        <a href="#index" class="icon-only back"><i class="icon icon-back"></i></a>
+        </div><!--navbar-left-->
+        <div class="center">APK MASTER</div>
+      </div><!--navbar-inner-->
+    </div><!--navbar-->
 
-                          <div class="page-content">
-                            <div id="content_detail">
-                            </div>
-                            </div><!--page content-->
-
-                          </div><!--page detail_realtime-->
-
-
-                            <div class="page cached" data-page="detail_realtime_id">
-                              <!--navbar-->
-                            <div class="navbar">
-                              <div class="navbar-inner">
-                                <!-- We need cool sliding animation on title element, so we have additional "sliding" class -->
-                                <div class="left">
-                                <a href="#detail_realtime" class="icon-only"><i class="icon icon-back"></i></a>
-                                </div><!--navbar-left-->
-                                <div id="center_detail_id" class="center"></div>
-                                <div id="right_detail_id" class="right">
-                                </div><!--navbar-right-->
-                              </div><!--navbar-inner-->
-                            </div><!--navbar-->
-                            <div class="page-content">
-                              <div id="content_detail_id">
-                                <!-- Slider -->
-
-                              </div>
-                              </div><!--page content-->
-
-                            </div><!--page detail_realtime_id-->
-
-
-
-                            <div class="page cached" data-page="daily_report" class="page navbar-fixed toolbar-fixed">
-                              <!--navbar-->
-                            <div class="navbar">
-                              <div class="navbar-inner">
-                                <!-- We need cool sliding animation on title element, so we have additional "sliding" class -->
-                                <div class="left">
-                                <a href="#" class="open-panel link icon-only"><i class="icon icon-bars"></i></a>
-                                </div><!--navbar-left-->
-                                <div class="center">APK MASTER</div>
-                                <div id="right_index" class="right">
-
-                                </div><!--navbar-right-->
-                              </div><!--navbar-inner-->
-                            </div><!--navbar-->
-                            <div class="page-content">
-
-                                            <div id="contenthead">
-                                              <div class="list-block">
-                                                <ul>
-                                                  <li>
-                                                    <div class="item-content">
-
-                                                   <input type="text" placeholder="เลือกวันที่" readonly id="calendar-default"><i id="search" class="f7-icons">search</i>
-
-
-
-
-                                                    </div>
-                                                  </li>
-                                                </ul>
-                                              </div>
-                                            </div>
-                                            <div id="content_daily_report">
-                                            </div>
-
-
-
-                                          </div><!--page content-->
-                                        </div><!--page daily_report-->
-
+<div class="page-content">
+<div id="content_detail_id"></div>
+</div><!--page content-->
 
         </div><!--pages-->
         </div><!--view-main-->

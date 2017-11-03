@@ -19,6 +19,15 @@ $response3=$ob_report->getWood_pieces($saw_id,$MONTH,$YEAR);
     case 'ไม้ฟืน':
 $response3=$ob_report->getFire_wood($saw_id,$MONTH,$YEAR);
 break;
+case 'ไม้เกรด':
+$response3=$ob_report->getWood_grade($saw_id,$MONTH,$YEAR);
+break;
+case 'ปีกไม้':
+$response3=$ob_report->getWood_wing($saw_id,$MONTH,$YEAR);
+break;
+case 'ขี้เลื่อย':
+$response3=$ob_report->getSawdust($saw_id,$MONTH,$YEAR);
+break;
 }
 $response=$ob_report->getList($response1,$response2,$response3,$list_day);
 /*

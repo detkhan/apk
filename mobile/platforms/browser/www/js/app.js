@@ -1,11 +1,35 @@
 checkcookies();
 function checkcookies() {
 if(localStorage.email){
-gethome("2017-04-20");
+  var formattedDate = new Date();
+  var d = formattedDate.getDate();
+  var m =  formattedDate.getMonth();
+  m += 1;  // JavaScript months are 0-11
+  var y = formattedDate.getFullYear();
+  var datereport=y + "-" + m + "-" + d;
+gethome(datereport);
 }else{
 getlogin();
 }
 }//checkcookies
+
+var ptrContent = $$('.pull-to-refresh-content');
+ptrContent.on('ptr:refresh', function (e) {
+    // Emulate 2s loading
+myApp.showPreloader('refresh...<br><span class="preloader-inner-half-circle"></span>');
+setTimeout(function () {
+      $$("#content").html("");
+      var formattedDate = new Date();
+      var d = formattedDate.getDate();
+      var m =  formattedDate.getMonth();
+      m += 1;  // JavaScript months are 0-11
+      var y = formattedDate.getFullYear();
+      var datereport=y + "-" + m + "-" + d;
+    gethome(datereport);
+      myApp.hidePreloader();
+myApp.pullToRefreshDone();
+  }, 2000);
+  });
 
 function getlogin() {
 $$("#content").html("");
@@ -27,7 +51,7 @@ var content='\
               <div class="list-block">\
                 <ul>\
                   <li class="item-content">\
-                  <div class="item-media"><i class="material-icons">mail</i></div>\
+                  <div class="item-media"><i class="f7-icons">mail</i></div>\
                     <div class="item-inner">\
                       <div class="item-input">\
                         <input type="text" id="email" name="email" placeholder="Email">\
@@ -35,7 +59,7 @@ var content='\
                     </div>\
                   </li>\
                   <li class="item-content">\
-                  <div class="item-media"><i class="material-icons">https</i></div>\
+                  <div class="item-media"><i class="f7-icons">https</i></div>\
                     <div class="item-inner">\
                       <div class="item-input">\
                         <input type="password" id="password" name="password" placeholder="Password">\
@@ -51,19 +75,18 @@ var content='\
                 </div>\
                 <div class="col-25"></div>\
                 </div>\
-                <div class="row">\
-                <div class="col-25"></div>\
-                <div class="col-50">\
-                  <a id="forget" href="#" class="button  button-fill">FORGET PASSWORD</a>\
-                </div>\
-                <div class="col-25"></div>\
-              </div> \
             </form>\
 ';
 $$("#content").append(content);
 }//getlogin()
 $$(document).on("click", "#home", function() {
-gethome("2017-04-20");
+  var formattedDate = new Date();
+  var d = formattedDate.getDate();
+  var m =  formattedDate.getMonth();
+  m += 1;  // JavaScript months are 0-11
+  var y = formattedDate.getFullYear();
+  var datereport=y + "-" + m + "-" + d;
+gethome(datereport);
 });
 
 
@@ -71,6 +94,9 @@ gethome("2017-04-20");
 $$(document).on("click", "#login", function() {
   var email = $$('#email').val();
   var password = $$('#password').val();
+if(email==""||password==""){
+myApp.alert("No empty !", 'APK MASTER');
+}
 var url = "http://"+hosturl+"/api/getlogin.php";
 $$.getJSON( url, {
     email:email,
@@ -84,7 +110,14 @@ myApp.alert("Wong Password !", 'APK MASTER');
 }else{
 localStorage.email=email;
 localStorage.fullname=field.fullname;
-gethome("2017-04-20");
+var formattedDate = new Date();
+var d = formattedDate.getDate();
+var m =  formattedDate.getMonth();
+m += 1;  // JavaScript months are 0-11
+var y = formattedDate.getFullYear();
+var datereport=y + "-" + m + "-" + d;
+var datereportshow=d + "/" + m + "/" + y;
+gethome(datereport);
 }
 
 
@@ -94,26 +127,39 @@ gethome("2017-04-20");
 
 });//click login
 
+$$(document).on("click", "#logout", function() {
+myApp.closePanel();
+myApp.alert("ออกจากระบบ", 'APK MASTER');
+localStorage.removeItem("email");
+localStorage.removeItem("fullname");
+getlogin();
+});//click logout
 function gethome(datenow) {
 $$("#content").html("");
-$$("#right_index").html("");
+$$("#fullname").html("");
 $$(".navbar").css('display', 'block');
 $$("#contenthead").css('display', 'none');
 $$("#tab").css('display', 'none');
 $$(".page-content").removeClass("login-screen-content");
+$$("#right_index").html("");
 var calendar='\
-<i id="calendar" class="f7-icons" report="realtime">calendar</i>\
+<i id="calendars" style="font-size: 30px;" class="f7-icons" report="realtime" >calendar</i>\
 ';
 $$("#right_index").append(calendar);
+var fullname='<i class="f7-icons">person</i>  '+localStorage.fullname;
+$$("#fullname").append(fullname);
 //var datereport="2017-04-20";
 //var datereport = new Date("2017-04-20");
+/*
 var formattedDate = new Date(datenow);
 var d = formattedDate.getDate();
 var m =  formattedDate.getMonth();
 m += 1;  // JavaScript months are 0-11
 var y = formattedDate.getFullYear();
-var datereport=y + "-" + m + "-" + d;
-var datereportshow=d + "/" + m + "/" + y;
+*/
+var datereport=datenow;
+var array_day = datereport.split("-");
+var datereportshow=array_day[2] + "/" + array_day[1] + "/" + array_day[0];
 getRealtimeTransaction(datereport,datereportshow);
 }//gethome
 
@@ -129,17 +175,42 @@ var content= '\
       <ul>\
         <li class="item-content">\
           <div class="item-inner">\
-            <div class="item-title">wood:ปริมาณไม้เข้า(ตัน)</div>\
+            <div class="item-title">A:ปริมาณไม้เข้า(ตัน)</div>\
           </div>\
         </li>\
         <li class="item-content">\
           <div class="item-inner">\
-            <div class="item-title">price:ราคาเฉลี่ยต่อกิโลกรัม(บาท)</div\
+            <div class="item-title">B:ราคาเฉลี่ยต่อตัน(บาท)</div\
           </div>\
         </li>\
         <li class="item-content">\
           <div class="item-inner">\
-            <div class="item-title">car:จำนวนรถ(คัน)</div>\
+            <div class="item-title">C:จำนวนรถ(คัน)</div>\
+          </div>\
+        </li>\
+        <li class="item-content">\
+          <div class="item-inner">\
+            <div class="item-title">D:ปริมาณไม้ท่อน(ตัน)</div>\
+          </div>\
+        </li>\
+        <li class="item-content">\
+          <div class="item-inner">\
+            <div class="item-title">E:ปริมาณไม้ฟืน(ตัน)</div>\
+          </div>\
+        </li>\
+        <li class="item-content">\
+          <div class="item-inner">\
+            <div class="item-title">F:ปริมาณไม้เกรด(ตัน)</div>\
+          </div>\
+        </li>\
+        <li class="item-content">\
+          <div class="item-inner">\
+            <div class="item-title">G:ปริมาณปีกไม้(ตัน)</div>\
+          </div>\
+        </li>\
+        <li class="item-content">\
+          <div class="item-inner">\
+            <div class="item-title">H:ปริมาณขี้เลื่อย(ตัน)</div>\
           </div>\
         </li>\
       </ul>\
@@ -173,7 +244,7 @@ var borderColor=
 	'rgba(153, 102, 255,1)',
 	'rgba(201, 203, 207,1)'
 ];
-var label=["Wood", "Price", "Car"];
+var label=["A","B","C","D","E","F","G","H"];
 var datasets=[];
   $$.getJSON( url, {
       email:email,
@@ -184,9 +255,17 @@ var datasets=[];
   $$.each(data, function(i, field){
     //console.log(i);
 if (field[0].transaction_count>0) {
+  var weight_total = Number(field[0].weight_total).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false});
+  var price_total_per_kg =Number(field[0].price_total_per_kg).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false});
+  var woodPices = Number(field[0].woodPices).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false});
+  var fireWood = Number(field[0].fireWood).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false});
+  var woodGade = Number(field[0].woodGade).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false});
+  var woodWing = Number(field[0].woodWing).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false});
+  var sawDust = Number(field[0].sawDust).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false});
   var a={
               label: field[0].shortname,
-              data: [field[0].weight_total,field[0].price_total,field[0].transaction_count],
+              stack: 'Stack 0',
+              data: [weight_total,price_total_per_kg,field[0].transaction_count,woodPices,fireWood,woodGade,woodWing,sawDust],
               backgroundColor:backgroundColor[i],
               borderColor:borderColor[i],
               borderWidth: 1
@@ -197,9 +276,9 @@ if (field[0].transaction_count>0) {
       <div class="card-content">\
       <div class="list-block">\
         <ul>\
-          <li class="item-content">\
+          <li class="item-content" id="detailrealtime" datereport="'+datereport+'" sawId="'+field[0].sawId+'">\
             <div class="item-inner">\
-              <div id="detailrealtime" datereport="'+datereport+'" sawId="'+field[0].sawId+'" class="item-title"><a href="#detail_realtime">รายละเอียดของสาขา '+field[0].shortname+'</a></div>\
+              <div  class="item-title">รายละเอียดของสาขา '+field[0].shortname+'</div>\
             </div>\
           </li>\
           </ul>\
@@ -224,13 +303,19 @@ var myChart = new Chart(ctx, {
         datasets:datasets
     },
     options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }]
-        }
+      tooltips: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    responsive: true,
+      scales: {
+        xAxes: [{
+                                   stacked: true,
+                               }],
+                               yAxes: [{
+                                   stacked: true
+                               }]
+      }
     }
 });
 Chart.plugins.register({
@@ -269,7 +354,7 @@ Chart.plugins.register({
 
 
 
-$$(document).on("click", "#calendar", function() {
+$$(document).on("click", "#calendars", function() {
 $$("#contenthead").html("");
 $$("#contenthead").css('display', 'block');
 var report=$$(this).attr("report");
@@ -292,7 +377,6 @@ $$("#contenthead").append(content);
 var calendarDefault = myApp.calendar({
     input: '#calendar-default',
 });
-console.log(calendarDefault);
 }else {
   var content='\
   <div class="list-block">\
@@ -353,55 +437,76 @@ var myPicker2 = myApp.picker({
 );
 */
 });
+$$(document).on("change", "#calendar-default", function(){
+  search();
+});
+/*
+$$(document).on("change", "#picker-input-month", function(){
 
+search();
+});
+*/
 
-$$(document).on("click", "#search", function() {
-var dateselect=$$("#calendar-default").val();
-var report=$$(this).attr("report");
-var proname=$$(this).attr("proname");
-var saw_id=$$(this).attr("saw_id");
-switch (report) {
-  case 'realtime':
-    gethome(dateselect);
-    break;
-    case 'month_report':
-    var dateselectmonth=$$("#picker-input-month").val();
-
-    dateselectmonth=dateselectmonth.split(' ');
-    var monthraw=dateselectmonth[0];
-    var y=dateselectmonth[1];
-    var month=getMonthraw(monthraw)+1;
-    var dateselectnew=y+'-'+month+'-01';
-    //console.log(month);
-    //alert(month);
-    //gethome(dateselect);
-    getDataPro_name(dateselectnew,proname,saw_id);
-    break;
-    case 'profit_report':
-    var dateselectmonth=$$("#picker-input-month").val();
-    dateselectmonth=dateselectmonth.split(' ');
-    var monthraw=dateselectmonth[0];
-    var y=dateselectmonth[1];
-    var month=getMonthraw(monthraw)+1;
-    var dateselectnew=y+'-'+month+'-01';
-    getDataProFit(dateselectnew,saw_id);
+function search() {
+  var dateselect=$$("#calendar-default").val();
+  var report=$$("#search").attr("report");
+  var proname=$$("#search").attr("proname");
+  var saw_id=$$("#search").attr("saw_id");
+  switch (report) {
+    case 'realtime':
+      gethome(dateselect);
       break;
-      case 'performance_report':
+      case 'month_report':
+      var dateselectmonth=$$("#picker-input-month").val();
+
+      dateselectmonth=dateselectmonth.split(' ');
+      var monthraw=dateselectmonth[0];
+      var y=dateselectmonth[1];
+      var month=getMonthraw(monthraw)+1;
+      var dateselectnew=y+'-'+month+'-01';
+      //console.log(month);
+      //alert(month);
+      //gethome(dateselect);
+      getDataPro_name(dateselectnew,proname,saw_id);
+      break;
+      case 'profit_report':
       var dateselectmonth=$$("#picker-input-month").val();
       dateselectmonth=dateselectmonth.split(' ');
       var monthraw=dateselectmonth[0];
       var y=dateselectmonth[1];
       var month=getMonthraw(monthraw)+1;
       var dateselectnew=y+'-'+month+'-01';
-      getDataPerformance(dateselectnew,saw_id);
+      getDataProFit(dateselectnew,saw_id);
         break;
-  default:
+        case 'performance_report':
+        var dateselectmonth=$$("#picker-input-month").val();
+        dateselectmonth=dateselectmonth.split(' ');
+        var monthraw=dateselectmonth[0];
+        var y=dateselectmonth[1];
+        var month=getMonthraw(monthraw)+1;
+        var dateselectnew=y+'-'+month+'-01';
+        getDataPerformance(dateselectnew,saw_id);
+          break;
+    default:
 
+  }
 }
-
+$$(document).on("click", "#search", function() {
+  search();
 });
 
+
+
 $$(document).on("click", "#detailrealtime", function() {
+
+
+  /*
+  $$("#right_index").css('display', 'none');
+    $$("#content").css('display', 'none');
+  $$("#left_index").html("");
+  var menu_left='<a id="back_detail_realtime" href="#" class="icon-only"><i class="icon icon-back"></i>Back</a>';
+  $$("#left_index").append(menu_left);
+  */
 var datereport=$$(this).attr("datereport");
 var sawId=$$(this).attr("sawId");
 getdetailrealtime(sawId,datereport);
@@ -409,7 +514,7 @@ getdetailrealtime(sawId,datereport);
 
 function getdetailrealtime(sawId,datereport) {
   $$("#content_detail").html('');
-  //mainView.router.load({pageName: 'detailrealtime'});
+mainView.router.load({pageName: 'list',ignoreCache:true});
   var content='';
   var url = "http://"+hosturl+"/api/reportrealtimedetail.php";
   content+='\
@@ -422,7 +527,6 @@ function getdetailrealtime(sawId,datereport) {
       datereport:datereport
     }
   ,function( data ) {
-  console.log(data[0].length);
   //var dataarray=data[0];
   $$.each(data[0], function(i, field){
     //console.log(i);
@@ -430,7 +534,7 @@ function getdetailrealtime(sawId,datereport) {
 
     content+='\
     <li>\
-         <a id="listdetail" href="#" class="item-link item-content"\
+         <a id="listdetail" href="" class="item-link item-content"\
           weight_no="'+field.weight_no+'"\
           sawId="'+field.sawId+'"\
           car_register="'+field.car_register+'"\
@@ -463,6 +567,7 @@ function getdetailrealtime(sawId,datereport) {
   </div>\
   ';
   $$("#content_detail").append(content);
+
   //console.log(content);
 });//getjson
 
@@ -470,7 +575,7 @@ function getdetailrealtime(sawId,datereport) {
 }//function detailtime
 
 
-
+/*
 $$(document).on('page:init', '.page[data-page="detail_realtime_id"]', function (e) {
   // Do something here when page with data-page="about" attribute loaded and initialized
   var mySwiper = myApp.swiper('.swiper-container', {
@@ -486,9 +591,34 @@ $$(document).on('page:reinit', '.page[data-page="detail_realtime_id"]', function
   });
 
 });
+*/
+$$(document).on('page:back', '.page[data-page="list"]', function (e) {
+  $$("#content_detail").html('');
+});
+$$(document).on('page:back', '.page[data-page="listdetail"]', function (e) {
+  $$("#content_detail_id").html('');
+});
+$$(document).on("click", "#back_detail_realtime", function() {
+//mainView.router.load({pageName: 'index'});
+$$("#left_index").html("");
+var menu_left='<a href="#" class="open-panel link icon-only"><i class="f7-icons" style="font-size: 30px;">bars</i></a>';
+$$("#left_index").append(menu_left);
+$$("#content").css('display', 'block');
+$$("#right_index").css('display', 'block');
+$$("#content_detail").html('');
+});
+$$(document).on("click", "#detail_realtime_id", function() {
+$$("#content_detail_id").html('');
+$$("#left_index").html("");
+var menu_left='<a id="back_detail_realtime" href="#" class="icon-only"><i class="icon icon-back"></i>Back</a>';
+$$("#left_index").append(menu_left);
+$$("#content_detail").css('display', 'block');
+});
 
 
 $$(document).on("click", "#listdetail", function() {
+
+mainView.router.load({pageName: 'listdetail',ignoreCache:true});
 
 var sawId=$$(this).attr("sawId");
 var weight_no=$$(this).attr("weight_no");
@@ -501,39 +631,42 @@ var datetime_out=$$(this).attr("datetime_out");
 var weight_net=$$(this).attr("weight_net");
 var price=$$(this).attr("price");
 var bill_no=$$(this).attr("bill_no");
-
-$$("#center_detail_id").html('');
-$$("#content_detail_id").html('');
-$$("#center_detail_id").append(cus_name);
+//$$("#content_detail").css('display', 'none');
+//$$("#left_index").html("");
+//var menu_left='<a id="detail_realtime_id" href="#" class="icon-only"><i class="icon icon-back"></i>Back</a>';
+//$$("#center_detail_id").html('');
+//$$("#content_detail_id").html('');
+//$$("#center_detail_id").append(cus_name);
 
 var content='';
 content+='\
 <div class="card">\
-    <div class="card-header">bill no: '+bill_no+'</div>\
+    <div class="card-header">'+cus_name+'</div>\
     <div class="card-content">\
-<!-- Slider -->\
-<div class="swiper-container">\
-<div class="swiper-wrapper">\
 ';
+
 var url = "http://"+hosturl+"/api/report_realtime_detail_id.php";
+var array_img=[];
 $$.getJSON( url, {
     sawId:sawId,
     weight_no:weight_no
   }
 ,function( data ) {
-console.log(data.length);
-//var dataarray=data[0];
-$$.each(data[0], function(i, field){
 
-content+='\
-<div class="swiper-slide"><span><img src="http://afm.revocloudserver.com/uploadimage/'+field.file_image+'" width="100%" height="300"></span></div>\
-';
+if (data[0]!='no') {
+$$.each(data[0], function(i, field){
+array_img.push("http://afm.revocloudserver.com/uploadimage/"+field.file_image);
 });//each
-content+='\
-</div>\
-<div class="swiper-pagination"></div>\
-</div>\
-';
+
+
+  var myPhotoBrowserStandalone = myApp.photoBrowser({
+      photos :array_img
+  });
+}
+var check=array_img.length;
+if (check>0) {
+content+='<div class="col-33"><a href="#" class="button pb-standalone">รูปภาพ</a></div>';
+}
 content+='\
         <div class="card-content-inner">\
         <p>pro name: '+pro_name+'</p>\
@@ -549,13 +682,20 @@ content+='\
 </div> \
 ';
 $$("#content_detail_id").append(content);
+
+
 //console.log(content);
-mainView.router.load({pageName: 'detail_realtime_id'});
+//Open photo browser on click
+$$('.pb-standalone').on('click', function () {
+    myPhotoBrowserStandalone.open();
+});
+
+
 });//getjson
 
 
-
 });
+
 
 
 
@@ -567,8 +707,10 @@ $$(document).on("click", "#month_report", function() {
   $$("#contenthead").css('display', 'none');
   $$(".page-content").removeClass("login-screen-content");
   var proname=$$(this).attr("proname");
+  var Arrray_SawID=getSawID();
+var saw_id=Arrray_SawID[0].sawId;
   var calendar='\
-  <i id="calendar" class="f7-icons" report="month_report" proname="'+proname+'">calendar</i>\
+  <i id="calendars" style="font-size: 36px;" class="f7-icons" report="month_report" proname="'+proname+'" saw_id="'+saw_id+'">calendar</i>\
   ';
   $$("#right_index").append(calendar);
   var formattedDate = new Date();
@@ -578,10 +720,8 @@ $$(document).on("click", "#month_report", function() {
   var y = formattedDate.getFullYear();
   var datereport=y + "-" + m + "-" + d;
   var datereportshow=d + "/" + m + "/" + y;
-  var Arrray_SawID=getSawID();
-var saw_id=Arrray_SawID[0].sawId;
 var report="month_report";
-tabs(Arrray_SawID,report,datereport);
+tabs(Arrray_SawID,report,datereport,proname);
 getDataPro_name(datereport,proname,saw_id);
 
 });
@@ -625,13 +765,11 @@ function getMonthraw(month) {
 function getDataPro_name(datenow,proname,saw_id) {
   $$("#content").html("");
   $$("#contenthead").css('display', 'none');
-  var formattedDate = new Date(datenow);
-  var d = formattedDate.getDate();
-  var m =  formattedDate.getMonth();
-  m += 1;  // JavaScript months are 0-11
-  var y = formattedDate.getFullYear();
-  var datereport=y + "-" + m + "-" + d;
-  var datereportshow=d + "/" + m + "/" + y;
+  var datereport=datenow;
+  var array_day = datereport.split("-");
+  var datereportshow=array_day[2] + "/" + array_day[1] + "/" + array_day[0];
+  var m=array_day[1];
+  var y=array_day[0];
   var email =localStorage.email;
   var month_name=getMonth(m);
   console.log(month_name);
@@ -656,18 +794,19 @@ function getDataPro_name(datenow,proname,saw_id) {
     </thead>\
     <tbody>\
   ';
+  var sum_wood_income=0;
+  var sum_wood_sale=0;
+  var sum_timber_saw=0;
+  var sum_total=0;
+  var sum_losts=0;
   $$.getJSON( url, {
       saw_id:saw_id,
       datereport:datereport,
       pro_name:proname
     }
   ,function( data ) {
-  console.log(data);
   var num=1;
   $$.each(data, function(i, field){
-    console.log(i);
-    console.log(field.wood_income);
-    console.log("num="+num);
     var modceck=num%2;
     if (modceck==0) {
       table+='\
@@ -676,18 +815,40 @@ function getDataPro_name(datenow,proname,saw_id) {
       table+='\
       <tr>';
     }
+    var wood_income=checknull(field.wood_income);
+    var wood_sale=checknull(field.wood_sale);
+    var timber_saw=checknull(field.timber_saw);
+    var total=checknull(field.total);
+    var losts=checknull(field.losts);
+    if (wood_income !=0 || wood_sale !=0 || timber_saw !=0 || total !=0 || losts !=0) {
+    console.log("yes");
+
     table+='\
       <td style="text-align: center">'+num+'</td>\
-      <td style="text-align: center">'+field.wood_income+'</td>\
-      <td style="text-align: center">'+field.wood_sale+'</td>\
-      <td style="text-align: center">'+field.timber_saw+'</td>\
-      <td style="text-align: center">'+field.total+'</td>\
-      <td style="text-align: center">'+field.losts+'</td>\
+      <td style="text-align: center">'+Number(wood_income).toLocaleString()+'</td>\
+      <td style="text-align: center">'+Number(wood_sale).toLocaleString()+'</td>\
+      <td style="text-align: center">'+Number(timber_saw).toLocaleString()+'</td>\
+      <td style="text-align: center">'+Number(total).toLocaleString()+'</td>\
+      <td style="text-align: center">'+Number(losts).toLocaleString()+'</td>\
     </tr>\
     ';
+    sum_wood_income+=parseFloat(wood_income);
+    sum_wood_sale+=parseFloat(wood_sale);
+    sum_timber_saw+=parseFloat(timber_saw);
+    sum_total+=parseFloat(total);
+    sum_losts+=parseFloat(losts);
+    }
     num++;
 });//each
 table+='\
+<tr style="background-color:#c4e487">\
+<td style="text-align: center">รวม</td>\
+<td style="text-align: center">'+sum_wood_income.toLocaleString()+'</td>\
+<td style="text-align: center">'+sum_wood_sale.toLocaleString()+'</td>\
+<td style="text-align: center">'+sum_timber_saw.toLocaleString()+'</td>\
+<td style="text-align: center">'+sum_total.toLocaleString()+'</td>\
+<td style="text-align: center">'+sum_losts.toLocaleString()+'</td>\
+</tr>\
 </tbody>\
 </table>\
 </div>\
@@ -695,6 +856,18 @@ table+='\
 $$("#content").append(table);
 });//getJSON
 
+}//function
+
+function checknull(data) {
+  var result='';
+
+  if (!data) {
+    result=0;
+
+  }else {
+    result=data;
+  }
+  return result;
 }
 
 
@@ -707,8 +880,10 @@ $$(document).on("click", "#profit", function() {
   $$("#contenthead").css('display', 'none');
   $$(".page-content").removeClass("login-screen-content");
   var proname=$$(this).attr("proname");
+  var Arrray_SawID=getSawID();
+var saw_id=Arrray_SawID[0].sawId;
   var calendar='\
-  <i id="calendar" class="f7-icons" report="profit_report">calendar</i>\
+  <i id="calendars" style="font-size: 36px;" class="f7-icons" report="profit_report" saw_id="'+saw_id+'">calendar</i>\
   ';
   $$("#right_index").append(calendar);
   var formattedDate = new Date();
@@ -718,23 +893,19 @@ $$(document).on("click", "#profit", function() {
   var y = formattedDate.getFullYear();
   var datereport=y + "-" + m + "-" + d;
   var datereportshow=d + "/" + m + "/" + y;
-  var Arrray_SawID=getSawID();
-var saw_id=Arrray_SawID[0].sawId;
 var report="profit_report";
-tabs(Arrray_SawID,report,datereport);
+tabs(Arrray_SawID,report,datereport,proname);
   getDataProFit(datereport,saw_id);
 });//click
 
 function getDataProFit(datenow,saw_id) {
   $$("#content").html("");
   $$("#contenthead").css('display', 'none');
-  var formattedDate = new Date(datenow);
-  var d = formattedDate.getDate();
-  var m =  formattedDate.getMonth();
-  m += 1;  // JavaScript months are 0-11
-  var y = formattedDate.getFullYear();
-  var datereport=y + "-" + m + "-" + d;
-  var datereportshow=d + "/" + m + "/" + y;
+  var datereport=datenow;
+  var array_day = datereport.split("-");
+  var datereportshow=array_day[2] + "/" + array_day[1] + "/" + array_day[0];
+  var m=array_day[1];
+  var y=array_day[0];
   var email =localStorage.email;
   var month_name=getMonth(m);
   console.log(month_name);
@@ -759,6 +930,11 @@ function getDataProFit(datenow,saw_id) {
     </thead>\
     <tbody>\
   ';
+  var sum_incoming_total=0;
+  var sum_outcoming_total=0;
+  var sum_gross_profit_total=0;
+  var sum_costs_total=0;
+  var sum_profit_loss_total=0;
   $$.getJSON( url, {
       saw_id:saw_id,
       datereport:datereport,
@@ -775,16 +951,29 @@ function getDataProFit(datenow,saw_id) {
       <tr>';
     }
     table+='\
-      <td style="text-align: center">'+field.date+'</td>\
-      <td style="text-align: center">'+field.incoming_total+'</td>\
-      <td style="text-align: center">'+field.outcoming_total+'</td>\
-      <td style="text-align: center">'+field.gross_profit_total+'</td>\
-      <td style="text-align: center">'+field.costs_total+'</td>\
-      <td style="text-align: center">'+field.profit_loss_total+'</td>\
+      <td style="text-align: center">'+Number(field.date).toLocaleString()+'</td>\
+      <td style="text-align: center">'+Number(field.incoming_total).toLocaleString()+'</td>\
+      <td style="text-align: center">'+Number(field.outcoming_total).toLocaleString()+'</td>\
+      <td style="text-align: center">'+Number(field.gross_profit_total).toLocaleString()+'</td>\
+      <td style="text-align: center">'+Number(field.costs_total).toLocaleString()+'</td>\
+      <td style="text-align: center">'+Number(field.profit_loss_total).toLocaleString()+'</td>\
     </tr>\
     ';
+    sum_incoming_total+=parseFloat(field.incoming_total);
+    sum_outcoming_total+=parseFloat(field.outcoming_total);
+    sum_gross_profit_total+=parseFloat(field.gross_profit_total);
+    sum_costs_total+=parseFloat(field.costs_total);
+    sum_profit_loss_total+=parseFloat(field.profit_loss_total);
   });//each
   table+='\
+  <tr style="background-color:#c4e487">\
+  <td style="text-align: center">รวม</td>\
+  <td style="text-align: center">'+sum_incoming_total.toLocaleString()+'</td>\
+  <td style="text-align: center">'+sum_outcoming_total.toLocaleString()+'</td>\
+  <td style="text-align: center">'+sum_gross_profit_total.toLocaleString()+'</td>\
+  <td style="text-align: center">'+sum_costs_total.toLocaleString()+'</td>\
+  <td style="text-align: center">'+sum_profit_loss_total.toLocaleString()+'</td>\
+</tr>\
   </tbody>\
   </table>\
   </div>\
@@ -801,8 +990,10 @@ $$(document).on("click", "#performance", function() {
   $$(".navbar").css('display', 'block');
   $$("#contenthead").css('display', 'none');
   $$(".page-content").removeClass("login-screen-content");
+  var Arrray_SawID=getSawID();
+var saw_id=Arrray_SawID[0].sawId;
   var calendar='\
-  <i id="calendar" class="f7-icons" report="performance_report">calendar</i>\
+  <i id="calendars" style="font-size: 36px;" class="f7-icons" report="performance_report" proname=" " saw_id="'+saw_id+'">calendar</i>\
   ';
   $$("#right_index").append(calendar);
   var formattedDate = new Date();
@@ -811,23 +1002,20 @@ $$(document).on("click", "#performance", function() {
   m += 1;  // JavaScript months are 0-11
   var y = formattedDate.getFullYear();
   var datereport=y + "-" + m + "-" + d;
-  var Arrray_SawID=getSawID();
-var saw_id=Arrray_SawID[0].sawId;
+
 var report="performance_report";
-tabs(Arrray_SawID,report,datereport);
+tabs(Arrray_SawID,report,datereport,'');
   getDataPerformance(datereport,saw_id);
 });//click
 
 function getDataPerformance(datenow,saw_id) {
   $$("#content").html("");
   $$("#contenthead").css('display', 'none');
-  var formattedDate = new Date(datenow);
-  var d = formattedDate.getDate();
-  var m =  formattedDate.getMonth();
-  m += 1;  // JavaScript months are 0-11
-  var y = formattedDate.getFullYear();
-  var datereport=y + "-" + m + "-" + d;
-  var datereportshow=d + "/" + m + "/" + y;
+  var datereport=datenow;
+  var array_day = datereport.split("-");
+  var datereportshow=array_day[2] + "/" + array_day[1] + "/" + array_day[0];
+  var m=array_day[1];
+  var y=array_day[0];
   var email =localStorage.email;
   var month_name=getMonth(m);
   console.log(month_name);
@@ -869,12 +1057,12 @@ function getDataPerformance(datenow,saw_id) {
   ,function( data ) {
   console.log(data);
   $$.each(data, function(i, field){
-    sum_volume_product+=parseInt(field.volume_product);
-    sum_volume_product_goal+=parseInt(field.volume_product_goal);
-    sum_ab+=parseInt(field.ab);
-    sum_ab_goal+=parseInt(field.ab_goal);
-    sum_ab_c+=parseInt(field.ab_c);
-    sum__ab_c_goal+=parseInt(field.ab_c_goal);
+    sum_volume_product+=parseFloat(field.volume_product);
+    sum_volume_product_goal+=parseFloat(field.volume_product_goal);
+    sum_ab+=parseFloat(field.ab);
+    sum_ab_goal+=parseFloat(field.ab_goal);
+    sum_ab_c+=parseFloat(field.ab_c);
+    sum__ab_c_goal+=parseFloat(field.ab_c_goal);
     var modceck=(i+1)%2;
     if (modceck==0) {
       table+='\
@@ -1019,7 +1207,7 @@ return result;
 }
 
 
-function tabs(data,report,date) {
+function tabs(data,report,date,proname) {
   $$("#tab").html("");
   $$("#tabs").html("");
   $$("#tab").css('display', 'block');
@@ -1030,7 +1218,7 @@ function tabs(data,report,date) {
   $$.each(data, function(i, field){
     if (i==0) {
       content+='\
-      <a id="tab_menu" datetime="'+date+'" report="'+report+'" saw_id="'+field.sawId+'" href="#tab'+(i+1)+'" class="tab-link active">\
+      <a id="tab_menu" datetime="'+date+'" report="'+report+'" saw_id="'+field.sawId+'" proname="'+proname+'" href="#tab'+(i+1)+'" class="tab-link active">\
       <i class="icon demo-icon-1"></i>'+field.shortname+'\
       </a>\
       ';
@@ -1038,10 +1226,10 @@ function tabs(data,report,date) {
       <div id="tab'+(i+1)+'" class="tab active">\
       </div>\
       ';
-      var add_saw_id=$$("#calendar").attr("saw_id",field.sawId);
+      var add_saw_id=$$("#calendars").attr("saw_id",field.sawId);
     }else{
       content+='\
-      <a id="tab_menu" datetime="'+date+'" report="'+report+'" saw_id="'+field.sawId+'" href="#tab'+(i+1)+'" class="tab-link">\
+      <a id="tab_menu" datetime="'+date+'" report="'+report+'" saw_id="'+field.sawId+'" proname="'+proname+'" href="#tab'+(i+1)+'" class="tab-link">\
       <i class="icon demo-icon-1"></i>'+field.shortname+'\
       </a>\
       ';
@@ -1064,7 +1252,15 @@ $$(document).on("click", "#tab_menu", function() {
 var report=$$(this).attr("report");
 var datereport=$$(this).attr("datetime");
 var saw_id=$$(this).attr("saw_id");
-var add_saw_id=$$("#calendar").attr("saw_id",saw_id);
+var proname=$$(this).attr("proname");
+//var add_saw_id=$$("#calendars").attr("saw_id",saw_id);
+
+var add_saw_id=$("#calendars").removeAttr("style");
+$$("#right_index").html("");
+var calendar='\
+<i id="calendars" style="font-size: 36px;" class="f7-icons" report="'+report+'" proname="'+proname+'" saw_id="'+saw_id+'">calendar</i>\
+';
+$$("#right_index").append(calendar);
 switch (report) {
   case 'performance_report':
     getDataPerformance(datereport,saw_id);
@@ -1073,7 +1269,6 @@ switch (report) {
       getDataProFit(datereport,saw_id);
       break;
       case 'month_report':
-      var proname=$$("#calendar").attr("proname");
         getDataPro_name(datereport,proname,saw_id);
         break;
   default:
