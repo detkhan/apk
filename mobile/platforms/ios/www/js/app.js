@@ -171,6 +171,15 @@ var content= '\
         <div class="card-content-inner"><canvas id="myChart" width="600" height="400"></canvas></div>\
     </div>\
     <div class="card-footer">\
+    <div class="row">\
+    <div class="list-block accordion-list">\
+  <ul>\
+    <li class="accordion-item"><a href="#" class="item-content item-link">\
+        <div class="item-inner">\
+          <div class="item-title">ข้อมูลกราฟ</div>\
+        </div></a>\
+      <div class="accordion-item-content">\
+        <div class="content-block">\
     <div class="list-block">\
       <ul>\
         <li class="item-content">\
@@ -215,6 +224,12 @@ var content= '\
         </li>\
       </ul>\
     </div>\
+    </div>\
+     </div>\
+   </li>\
+   </ul\
+</div>\
+</div>\
     </div>\
 </div> \
 ';
@@ -264,7 +279,6 @@ if (field[0].transaction_count>0) {
   var sawDust = Number(field[0].sawDust).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false});
   var a={
               label: field[0].shortname,
-              stack: 'Stack 0',
               data: [weight_total,price_total_per_kg,field[0].transaction_count,woodPices,fireWood,woodGade,woodWing,sawDust],
               backgroundColor:backgroundColor[i],
               borderColor:borderColor[i],
@@ -313,7 +327,7 @@ var myChart = new Chart(ctx, {
                                    stacked: true,
                                }],
                                yAxes: [{
-                                   stacked: true
+                                   stacked: false
                                }]
       }
     }
@@ -330,7 +344,7 @@ Chart.plugins.register({
                     // Draw the text in black, with the specified font
                     ctx.fillStyle = 'rgb(0, 0, 0)';
 
-                    var fontSize = 10;
+                    var fontSize = 0;
                     var fontStyle = 'normal';
                     var fontFamily = 'Helvetica Neue';
                     ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
@@ -1058,11 +1072,11 @@ function getDataPerformance(datenow,saw_id) {
   console.log(data);
   $$.each(data, function(i, field){
     sum_volume_product+=parseFloat(field.volume_product);
-    sum_volume_product_goal+=parseFloat(field.volume_product_goal);
+    sum_volume_product_goal=parseFloat(field.volume_product_goal);
     sum_ab+=parseFloat(field.ab);
-    sum_ab_goal+=parseFloat(field.ab_goal);
+    sum_ab_goal=parseFloat(field.ab_goal);
     sum_ab_c+=parseFloat(field.ab_c);
-    sum__ab_c_goal+=parseFloat(field.ab_c_goal);
+    sum__ab_c_goal=parseFloat(field.ab_c_goal);
     var modceck=(i+1)%2;
     if (modceck==0) {
       table+='\
@@ -1073,9 +1087,9 @@ function getDataPerformance(datenow,saw_id) {
     }
     table+='\
       <td style="text-align: center">'+field.date+'</td>\
-      <td style="text-align: center">'+Number(field.volume_product).toLocaleString()+'/'+Number(field.volume_product_goal).toLocaleString()+'</td>\
-      <td style="text-align: center">'+Number(field.ab).toLocaleString()+'/'+Number(field.ab_goal).toLocaleString()+'</td>\
-      <td style="text-align: center">'+Number(field.ab_c).toLocaleString()+'/'+Number(field.ab_c_goal).toLocaleString()+'</td>\
+      <td style="text-align: center">'+Number(field.volume_product).toLocaleString()+'</td>\
+      <td style="text-align: center">'+Number(field.ab).toLocaleString()+'</td>\
+      <td style="text-align: center">'+Number(field.ab_c).toLocaleString()+'</td>\
     </tr>\
     ';
   });//each
@@ -1091,7 +1105,7 @@ function getDataPerformance(datenow,saw_id) {
   </div>\
   ';
   $$("#content").append(table);
-  console.log(sum__ab_c_goal.toLocaleString());
+
 
 
   var backgroundColor = [
@@ -1106,10 +1120,12 @@ function getDataPerformance(datenow,saw_id) {
 {
   						label: 'ผลการผลิต',
   						data:data1,
+              stack: 'Stack 0',
   						backgroundColor:backgroundColor[0]
   				},
   						{label: 'เป้าหมาย',
   						data:data2 ,
+              stack: 'Stack 0',
   						backgroundColor:backgroundColor[1]
   								}
 ];
@@ -1140,7 +1156,7 @@ responsive: true,
                                        stacked: true,
                                    }],
                                    yAxes: [{
-                                       stacked: true
+                                       stacked: false
                                    }]
           }
       }

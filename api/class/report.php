@@ -334,8 +334,8 @@ public function getSawdust($saw_id,$MONTH,$YEAR)
          [
            'date_wood' => date("d",strtotime($value['date_wood'])),
            'timber_saw' => "0",
-           'total' => $value['firewood_total'],
-           'losts' => $value['firewood_losts'],
+           'total' => $value['sawdust_total'],
+           'losts' => $value['sawdust_losts'],
          ];
        }
      }
@@ -358,11 +358,15 @@ return $response;
 
 public function getresponse1($value,$response1)
 {
+  $response='';
   if ($response1!="no") {
   foreach ($response1 as  $value2) {
   if ($value==$value2['date_data']) {
         $response=$value2['weight_total'];
     }
+}
+if ($response=="") {
+  $response=0;
 }
 }else {
   $response=0;
@@ -372,12 +376,15 @@ return $response;
 
 public function getresponse2($value,$response2)
 {
-
+$response='';
   if ($response2!="no") {
   foreach ($response2 as  $value3) {
   if ($value==$value3['date_data']) {
       $response=$value3['weight_total'];
   }
+    }
+    if ($response=="") {
+      $response=0;
     }
   }else {
     $response=0;
@@ -387,20 +394,22 @@ public function getresponse2($value,$response2)
 
 public function getresponse3($value,$response3)
 {
-
+$response='';
   if ($response3!="no") {
+
   foreach ($response3 as  $key=>$value4) {
 
   if ($value==$value4['date_wood']) {
       $response['timber_saw']=$value4['timber_saw'];
       $response['total']=$value4['total'];
       $response['losts']=$value4['losts'];
-  }else {
+  }
+    }
+  if ($response=="") {
     $response['timber_saw']=0;
     $response['total']=0;
     $response['losts']=0;
   }
-    }
   }
   else {
     $response['timber_saw']=0;
@@ -410,13 +419,13 @@ public function getresponse3($value,$response3)
     return $response;
 }//function
 
-public function getProfitLoss($saw_id,$month,$year)
+public function getProfitLoss($saw_id,$MONTH,$YEAR)
 {
   $clsMyDB = new MyDatabase();
   $strCondition2 = "
   SELECT *  FROM `profit_loss` WHERE
-   sawId = '$saw_id' and MONTH(datetime)='$month'
-   and YEAR(datetime)='$year'  ORDER BY date(datetime) ASC ";
+   sawId = '$saw_id' and MONTH(datetime)='$MONTH'
+   and YEAR(datetime)='$YEAR'  ORDER BY date(datetime) ASC ";
      $objSelect2 = $clsMyDB->fncSelectRecord($strCondition2);
      if(!$objSelect2)
      {
@@ -438,32 +447,29 @@ public function getProfitLoss($saw_id,$month,$year)
        return $response;
 }//function
 
-public function getPerformance($saw_id,$month,$year)
+public function getPerformance($saw_id,$MONTH,$YEAR)
 {
   $clsMyDB = new MyDatabase();
   $strCondition2 = "
-  SELECT volume_product,volume_product_goal,ab,ab_goal,ab_c,ab_c_goal,datetime FROM
+  SELECT volume_product,ab,ab_c,datevo FROM
   (
   SELECT * FROM
   (SELECT volume_product as ab ,datetime as dateab FROM `performance` WHERE
-   sawId = '$saw_id' and MONTH(datetime)='$month'
-   and YEAR(datetime)='$year' AND performance_type = 'AB/Goals'  ORDER BY date(datetime) ASC) as ab
-  INNER JOIN
-  (SELECT volume_product as volume_product_goal,ab as ab_goal,ab_c as ab_c_goal ,datetime FROM performance_goals WHERE sawId = '$saw_id' and MONTH(datetime)='$month'
-   and YEAR(datetime)='$year' ORDER BY date(datetime) ASC) as ab_goal
-  ON ab.dateab= ab_goal.datetime
+   sawId = '$saw_id' and MONTH(datetime)='$MONTH'
+   and YEAR(datetime)='$YEAR' AND performance_type = 'AB/Goals'  ORDER BY date(datetime) ASC) as ab
   INNER JOIN
   (SELECT volume_product as volume_product ,datetime as datevo FROM `performance` WHERE
-   sawId = '$saw_id' and MONTH(datetime)='$month'
-   and YEAR(datetime)='$year' AND performance_type = 'Volume_Product/Goals'  ORDER BY date(datetime) ASC) as vo
-  ON vo.datevo= ab_goal.datetime
+   sawId = '$saw_id' and MONTH(datetime)='$MONTH'
+   and YEAR(datetime)='$YEAR' AND performance_type = 'Volume_Product/Goals'  ORDER BY date(datetime) ASC) as vo
+  ON vo.datevo= ab.dateab
   INNER JOIN
   (SELECT volume_product as ab_c ,datetime as dateabc FROM `performance` WHERE
-   sawId = '$saw_id' and MONTH(datetime)='$month'
-   and YEAR(datetime)='$year' AND performance_type = 'Volume_Product/Goals'  ORDER BY date(datetime) ASC) as abc
+   sawId = '$saw_id' and MONTH(datetime)='$MONTH'
+   and YEAR(datetime)='$YEAR' AND performance_type = 'AB+C/Goals'  ORDER BY date(datetime) ASC) as abc
   ON vo.datevo= abc.dateabc
 )
 as a";
+$response_goal[] =$this->getGoal($saw_id,$MONTH,$YEAR);
      $objSelect2 = $clsMyDB->fncSelectRecord($strCondition2);
      if(!$objSelect2)
      {
@@ -473,17 +479,44 @@ as a";
        foreach ($objSelect2 as $value) {
          $response[] =
          [
-           'date' => date("d",strtotime($value['datetime'])),
+           'date' => date("d",strtotime($value['datevo'])),
            'volume_product' => $value['volume_product'],
-           'volume_product_goal' => $value['volume_product_goal'],
+           'volume_product_goal' => $response_goal[0][0]['volume_product_goal'],
            'ab' => $value['ab'],
-           'ab_goal' => $value['ab_goal'],
+           'ab_goal' => $response_goal[0][0]['ab_goal'],
            'ab_c' => $value['ab_c'],
-           'ab_c_goal' => $value['ab_c_goal'],
+           'ab_c_goal' => $response_goal[0][0]['ab_c_goal'],
          ];
        }
      }
+
        return $response;
+}
+
+public function getGoal($saw_id,$MONTH,$YEAR)
+{
+  $clsMyDB = new MyDatabase();
+  $strCondition2 = "
+  SELECT volume_product as volume_product_goal,ab as ab_goal,ab_c as ab_c_goal ,datetime FROM performance_goals WHERE sawId = '$saw_id' and MONTH(datetime)='$MONTH'
+   and YEAR(datetime)='$YEAR' ORDER BY date(datetime) ASC
+  ";
+  $objSelect2 = $clsMyDB->fncSelectRecord($strCondition2);
+  if(!$objSelect2)
+  {
+  $response="no";
+  }
+  else{
+    foreach ($objSelect2 as $value) {
+      $response[] =
+      [
+        'volume_product_goal' => $value['volume_product_goal'],
+        'ab_goal' => $value['ab_goal'],
+        'ab_c_goal' => $value['ab_c_goal'],
+      ];
+    }
+  }
+    return $response;
+
 }
 
 

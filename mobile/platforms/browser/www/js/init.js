@@ -23,6 +23,6 @@ var mySwiper = myApp.swiper('.swiper-container', {
 });
 */
 
-//var hosturl="127.0.0.1/apk";
-var hosturl="apk.revocloudserver.com";
+var hosturl="127.0.0.1/apk";
+//var hosturl="apk.revocloudserver.com";
 //var hosturl="192.168.1.104/apk";
