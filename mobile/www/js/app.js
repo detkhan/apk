@@ -171,14 +171,6 @@ var content= '\
         <div class="card-content-inner"><canvas id="myChart" width="600" height="400"></canvas></div>\
     </div>\
     <div class="card-footer">\
-    <div class="row">\
-    <div class="list-block accordion-list">\
-  <ul>\
-    <li class="accordion-item"><a href="#" class="item-content item-link">\
-        <div class="item-inner">\
-          <div class="item-title">ข้อมูลกราฟ</div>\
-        </div></a>\
-      <div class="accordion-item-content">\
         <div class="content-block">\
     <div class="list-block">\
       <ul>\
@@ -197,40 +189,10 @@ var content= '\
             <div class="item-title">C:จำนวนรถ(คัน)</div>\
           </div>\
         </li>\
-        <li class="item-content">\
-          <div class="item-inner">\
-            <div class="item-title">D:ปริมาณไม้ท่อน(ตัน)</div>\
-          </div>\
-        </li>\
-        <li class="item-content">\
-          <div class="item-inner">\
-            <div class="item-title">E:ปริมาณไม้ฟืน(ตัน)</div>\
-          </div>\
-        </li>\
-        <li class="item-content">\
-          <div class="item-inner">\
-            <div class="item-title">F:ปริมาณไม้เกรด(ตัน)</div>\
-          </div>\
-        </li>\
-        <li class="item-content">\
-          <div class="item-inner">\
-            <div class="item-title">G:ปริมาณปีกไม้(ตัน)</div>\
-          </div>\
-        </li>\
-        <li class="item-content">\
-          <div class="item-inner">\
-            <div class="item-title">H:ปริมาณขี้เลื่อย(ตัน)</div>\
-          </div>\
-        </li>\
       </ul>\
     </div>\
     </div>\
      </div>\
-   </li>\
-   </ul\
-</div>\
-</div>\
-    </div>\
 </div> \
 ';
 $$("#content").append(content);
@@ -259,7 +221,7 @@ var borderColor=
 	'rgba(153, 102, 255,1)',
 	'rgba(201, 203, 207,1)'
 ];
-var label=["A","B","C","D","E","F","G","H"];
+var label=["A","B","C"];
 var datasets=[];
   $$.getJSON( url, {
       email:email,
@@ -272,6 +234,7 @@ var datasets=[];
 if (field[0].transaction_count>0) {
   var weight_total = Number(field[0].weight_total).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false});
   var price_total_per_kg =Number(field[0].price_total_per_kg).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false});
+  var price_total =Number(field[0].price_total).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false});
   var woodPices = Number(field[0].woodPices).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false});
   var fireWood = Number(field[0].fireWood).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false});
   var woodGade = Number(field[0].woodGade).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false});
@@ -279,7 +242,7 @@ if (field[0].transaction_count>0) {
   var sawDust = Number(field[0].sawDust).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false});
   var a={
               label: field[0].shortname,
-              data: [weight_total,price_total_per_kg,field[0].transaction_count,woodPices,fireWood,woodGade,woodWing,sawDust],
+              data: [weight_total,price_total_per_kg,field[0].transaction_count],
               backgroundColor:backgroundColor[i],
               borderColor:borderColor[i],
               borderWidth: 1
@@ -288,12 +251,19 @@ if (field[0].transaction_count>0) {
   var content='\
   <div class="card">\
       <div class="card-content">\
-      <div class="list-block">\
+      <div class="list-block media-list">\
         <ul>\
-          <li class="item-content" id="detailrealtime" datereport="'+datereport+'" sawId="'+field[0].sawId+'">\
+          <li id="detailrealtime" datereport="'+datereport+'" sawId="'+field[0].sawId+'" >\
+        <a href=""  class="item-link item-content">\
             <div class="item-inner">\
+            <div class="item-title-row">\
               <div  class="item-title">รายละเอียดของสาขา '+field[0].shortname+'</div>\
+              </div>\
+              <div class="item-subtitle">ปริมาณไม้เข้า'+weight_total+' ตัน</div>\
+              <div class="item-text"><p>ราคารวม'+price_total+' บาท<p></div>\
+              <div class="item-text"><p>ราคาเฉลี่ยต่อตัน'+price_total_per_kg+' บาท<p></div>\
             </div>\
+            </a>\
           </li>\
           </ul>\
           </div>\
@@ -501,7 +471,19 @@ function search() {
         var dateselectnew=y+'-'+month+'-01';
         getDataPerformance(dateselectnew,saw_id);
           break;
+                  case 'month_report_list':
+                  var dateselectmonth=$$("#picker-input-month").val();
+                  dateselectmonth=dateselectmonth.split(' ');
+                  var monthraw=dateselectmonth[0];
+                  var y=dateselectmonth[1];
+                  var month=getMonthraw(monthraw)+1;
+                  var dateselectnew=y+'-'+month+'-01';
+                      getMonthList(dateselectnew,saw_id);
+                    break;
     default:
+
+    var proname='ไม้ท่อน';
+
 
   }
 }
@@ -1234,7 +1216,7 @@ function tabs(data,report,date,proname) {
   $$.each(data, function(i, field){
     if (i==0) {
       content+='\
-      <a id="tab_menu" datetime="'+date+'" report="'+report+'" saw_id="'+field.sawId+'" proname="'+proname+'" href="#tab'+(i+1)+'" class="tab-link active">\
+      <a id="tab_menu" datetime="'+date+'" report="'+report+'" saw_id="'+field.sawId+'" proname="'+proname+'" href="#tabbar'+(i+1)+'" class="tab-link active">\
       <i class="icon demo-icon-1"></i>'+field.shortname+'\
       </a>\
       ';
@@ -1245,12 +1227,12 @@ function tabs(data,report,date,proname) {
       var add_saw_id=$$("#calendars").attr("saw_id",field.sawId);
     }else{
       content+='\
-      <a id="tab_menu" datetime="'+date+'" report="'+report+'" saw_id="'+field.sawId+'" proname="'+proname+'" href="#tab'+(i+1)+'" class="tab-link">\
+      <a id="tab_menu" datetime="'+date+'" report="'+report+'" saw_id="'+field.sawId+'" proname="'+proname+'" href="#tabbar'+(i+1)+'" class="tab-link">\
       <i class="icon demo-icon-1"></i>'+field.shortname+'\
       </a>\
       ';
       content2+='\
-      <div id="tab'+(i+1)+'" class="tab">\
+      <div id="tabbar'+(i+1)+'" class="tab">\
       </div>\
       ';
     }
@@ -1287,7 +1269,230 @@ switch (report) {
       case 'month_report':
         getDataPro_name(datereport,proname,saw_id);
         break;
+        case 'month_report_list':
+            getMonthList(datereport,saw_id);
+          break;
   default:
 
 }
 });//click
+
+
+$$(document).on("click", "#month_report_list", function() {
+  var Arrray_SawID=getSawID();
+  var saw_id=Arrray_SawID[0].sawId;
+  var formattedDate = new Date();
+  var d = formattedDate.getDate();
+  var m =  formattedDate.getMonth();
+  m += 1;  // JavaScript months are 0-11
+  var y = formattedDate.getFullYear();
+  var datereport=y + "-" + m + "-" + d;
+  var report="month_report_list";
+  var proname='ไม้ท่อน';
+  getMonthList(datereport,saw_id);
+  tabs(Arrray_SawID,report,datereport,proname);
+});//click
+
+function getMonthList(datereport,saw_id) {
+  $$("#content").html("");
+  $$("#contenthead2").html("");
+  $$("#right_index").html("");
+  $$(".navbar").css('display', 'block');
+  $$("#contenthead2").css('display', 'block');
+  $$("#contenthead").css('display', 'none');
+  $$(".page-content").removeClass("login-screen-content");
+  var calendar='\
+  <i id="calendars" style="font-size: 36px;" class="f7-icons" report="month_report_list" proname="ไม้ท่อน" saw_id="'+saw_id+'">calendar</i>\
+  ';
+  $$("#right_index").append(calendar);
+  var proname='ไม้ท่อน';
+  var proname2='ไม้ฟืน';
+  getHead2() ;
+  getMonthReport(datereport,proname,saw_id);
+  getMonthReport(datereport,proname2,saw_id);
+}
+function getHead2() {
+  var contenthead='\
+  <div class="card">\
+    <div class="card-content">\
+    <div class="card-content-inner">\
+    <div class="buttons-row">\
+         <!-- Link to 1st tab, active -->\
+         <a href="#tab1" class="tab-link active button">ไม้ท่อน(กก.)</a>\
+         <!-- Link to 2nd tab -->\
+         <a  href="#tab2" class="tab-link button">ไม้ฟืน(กก.)</a>\
+         <!-- Link to 3rd tab -->\
+         <a href="#tab3" class="tab-link button">น้ำหนักสินค้าขายออก</a>\
+       </div>\
+     </div>\
+     <!-- Tabs, tabs wrapper -->\
+     <div class="tabs">\
+       <!-- Tab 1, active by default -->\
+       <div id="tab1" class="tab active">\
+       </div>\
+       <!-- Tab 2 -->\
+       <div id="tab2" class="tab">\
+       </div>\
+       <!-- Tab 3 -->\
+       <div id="tab3" class="tab">\
+       </div>\
+       </div>\
+    </div>\
+    </div>\
+  ';
+  $$("#content").append(contenthead);
+}
+
+function getMonthReport(datereport,proname,saw_id) {
+  var idtab='';
+  var table='';
+  switch (proname) {
+    case 'ไม้ท่อน':
+      idtab='#tab1';
+      table+='\
+  <div class="data-table card">\
+  <table>\
+    <thead>\
+      <tr style="position: sticky">\
+        <th style="text-align: center">วันที่</th>\
+        <th style="text-align: center">'+proname+'เข้า</th>\
+        <th style="text-align: center">ไปเลื่อย</th>\
+        <th style="text-align: center">ไปขาย</th>\
+        <th style="text-align: center">คงเหลือ</th>\
+        <th style="text-align: center">สูญเสีย</th>\
+      </tr>\
+    </thead>\
+    <tbody>\
+  ';
+      break;
+      case 'ไม้ฟืน':
+          $$("#tab2").html("");
+          idtab='#tab2';
+          table+='\
+      <div class="data-table card">\
+      <table>\
+        <thead>\
+          <tr style="position: sticky">\
+            <th style="text-align: center">วันที่</th>\
+            <th style="text-align: center">'+proname+'เข้า</th>\
+            <th style="text-align: center">ไปขาย</th>\
+            <th style="text-align: center">คงเหลือ</th>\
+            <th style="text-align: center">สูญเสีย</th>\
+          </tr>\
+        </thead>\
+        <tbody>\
+      ';
+        break;
+    default:
+  }
+
+  $$("#contenthead").css('display', 'none');
+  var array_day = datereport.split("-");
+  var datereportshow=array_day[2] + "/" + array_day[1] + "/" + array_day[0];
+  var m=array_day[1];
+  var y=array_day[0];
+  var email =localStorage.email;
+  var month_name=getMonth(m);
+  console.log(month_name);
+  var content='\
+  <div class="content-block-title">รายงาน '+proname+' ประจำเดือน '+month_name+' ปี '+y+'</div>\
+  ';
+  $$(idtab).append(content);
+  var url = "http://"+hosturl+"/api/report_data_pro_name.php";
+
+  var sum_wood_income=0;
+  var sum_wood_sale=0;
+  var sum_timber_saw=0;
+  var sum_total=0;
+  var sum_losts=0;
+  $$.getJSON( url, {
+      saw_id:saw_id,
+      datereport:datereport,
+      pro_name:proname
+    }
+  ,function( data ) {
+  var num=1;
+  $$.each(data, function(i, field){
+    var modceck=num%2;
+    if (modceck==0) {
+      table+='\
+      <tr style="background-color:#f1f1f1">';
+    }else {
+      table+='\
+      <tr>';
+    }
+    var wood_income=checknull(field.wood_income);
+    var wood_sale=checknull(field.wood_sale);
+    var timber_saw=checknull(field.timber_saw);
+    var total=checknull(field.total);
+    var losts=checknull(field.losts);
+    if (wood_income !=0 || wood_sale !=0 || timber_saw !=0 || total !=0 || losts !=0) {
+    console.log("yes");
+if (proname=="ไม้ท่อน") {
+  table+='\
+    <td style="text-align: center">'+num+'</td>\
+    <td style="text-align: center">'+Number(wood_income).toLocaleString()+'</td>\
+    <td style="text-align: center">'+Number(timber_saw).toLocaleString()+'</td>\
+    <td style="text-align: center">'+Number(wood_sale).toLocaleString()+'</td>\
+    <td style="text-align: center">'+Number(total).toLocaleString()+'</td>\
+    <td style="text-align: center">'+Number(losts).toLocaleString()+'</td>\
+  </tr>\
+  ';
+}else {
+  table+='\
+    <td style="text-align: center">'+num+'</td>\
+    <td style="text-align: center">'+Number(wood_income).toLocaleString()+'</td>\
+    <td style="text-align: center">'+Number(wood_sale).toLocaleString()+'</td>\
+    <td style="text-align: center">'+Number(total).toLocaleString()+'</td>\
+    <td style="text-align: center">'+Number(losts).toLocaleString()+'</td>\
+  </tr>\
+  ';
+}
+
+    sum_wood_income+=parseFloat(wood_income);
+    sum_wood_sale+=parseFloat(wood_sale);
+    sum_timber_saw+=parseFloat(timber_saw);
+    sum_total+=parseFloat(total);
+    sum_losts+=parseFloat(losts);
+    }
+    num++;
+});//each
+if (proname=="ไม้ท่อน") {
+table+='\
+<tr style="background-color:#c4e487">\
+<td style="text-align: center">รวม</td>\
+<td style="text-align: center">'+sum_wood_income.toLocaleString()+'</td>\
+<td style="text-align: center">'+sum_timber_saw.toLocaleString()+'</td>\
+<td style="text-align: center">'+sum_wood_sale.toLocaleString()+'</td>\
+<td style="text-align: center">'+sum_total.toLocaleString()+'</td>\
+<td style="text-align: center">'+sum_losts.toLocaleString()+'</td>\
+</tr>\
+</tbody>\
+</table>\
+</div>\
+';
+}else {
+  table+='\
+  <tr style="background-color:#c4e487">\
+  <td style="text-align: center">รวม</td>\
+  <td style="text-align: center">'+sum_wood_income.toLocaleString()+'</td>\
+  <td style="text-align: center">'+sum_wood_sale.toLocaleString()+'</td>\
+  <td style="text-align: center">'+sum_total.toLocaleString()+'</td>\
+  <td style="text-align: center">'+sum_losts.toLocaleString()+'</td>\
+  </tr>\
+  </tbody>\
+  </table>\
+  </div>\
+  ';
+}
+$$(idtab).append(table);
+});//getJSON
+
+}
+/*
+$$(document).on("click", "#fireWood", function() {
+$$("#calendars").attr("proname","ไม้ฟืน");
+  var proname="ไม้ฟืน";
+getMonthReport(datereport,proname,saw_id);
+  });//click
+*/
